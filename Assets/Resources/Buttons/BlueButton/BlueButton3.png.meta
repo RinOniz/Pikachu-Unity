@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 2dd6f1efc4396074f9b9ac2a526555f1
+guid: db6576faeffa6ba4e81fd81e9b0ae9d7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7968904927735349844
-    second: YellowButton_0
+      213: -8678934712366662216
+    second: BlueButton3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: YellowButton_0
+      name: BlueButton3_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 262
-        height: 92
+        width: 524
+        height: 184
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 452868a8fcc379e60800000000000000
-      internalID: 7968904927735349844
+      spriteID: 8bdf390bcda3e8780800000000000000
+      internalID: -8678934712366662216
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      YellowButton_0: 7968904927735349844
+      BlueButton3_0: -8678934712366662216
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
