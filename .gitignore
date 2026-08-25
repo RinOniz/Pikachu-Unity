@@ -1,0 +1,33 @@
+# Unity
+
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Ll]ogs/
+UserSettings/
+MemoryCaptures/
+
+# Build outputs
+[Bb]uild/
+[Bb]uilds/
+
+# Visual Studio
+.vs/
+*.csproj
+*.sln
+*.slnx
+*.user
+*.suo
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Mac
+.DS_Store

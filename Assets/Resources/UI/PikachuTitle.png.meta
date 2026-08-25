@@ -1,0 +1,520 @@
+fileFormatVersion: 2
+guid: a17121760b617de449089c3a3dcef6b6
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -887530126729580177
+    second: PikachuTitle_0
+  - first:
+      213: -3937619746314863895
+    second: PikachuTitle_1
+  - first:
+      213: -8791784285916757043
+    second: PikachuTitle_2
+  - first:
+      213: 5590959756084728714
+    second: PikachuTitle_3
+  - first:
+      213: -7489028171200040598
+    second: PikachuTitle_4
+  - first:
+      213: 4080033190712818095
+    second: PikachuTitle_5
+  - first:
+      213: -2507612849853493458
+    second: PikachuTitle_6
+  - first:
+      213: 1275496122814263854
+    second: PikachuTitle_7
+  - first:
+      213: 147544975660603471
+    second: PikachuTitle_8
+  - first:
+      213: 7134458486679547106
+    second: PikachuTitle_9
+  - first:
+      213: -6908590465524681382
+    second: PikachuTitle_10
+  - first:
+      213: -5365696114133892714
+    second: PikachuTitle_11
+  - first:
+      213: 6146063148320100588
+    second: PikachuTitle_12
+  - first:
+      213: -1405874644993238461
+    second: PikachuTitle_13
+  - first:
+      213: 4967934742531730665
+    second: PikachuTitle_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: PikachuTitle_0
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 551
+        width: 532
+        height: 695
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6173d45d0cdea3f0800000000000000
+      internalID: -887530126729580177
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PikachuTitle_1
+      rect:
+        serializedVersion: 2
+        x: 902
+        y: 570
+        width: 1270
+        height: 458
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9eab65004b3ca59c0800000000000000
+      internalID: -3937619746314863895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PikachuTitle_2
+      rect:
+        serializedVersion: 2
+        x: 1782
+        y: 1027
+        width: 123
+        height: 117
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc30218d5ce4df580800000000000000
+      internalID: -8791784285916757043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PikachuTitle_3
+      rect:
+        serializedVersion: 2
+        x: 1894
+        y: 1037
+        width: 28
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a835fe6a644179d40800000000000000
+      internalID: 5590959756084728714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PikachuTitle_4
+      rect:
+        serializedVersion: 2
+        x: 2455
+        y: 1003
+        width: 116
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a617abe8e80a11890800000000000000
+      internalID: -7489028171200040598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PikachuTitle_5
+      rect:
+        serializedVersion: 2
+        x: 2544
+        y: 1018
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fa9bd3ce1903f9830800000000000000
+      internalID: 4080033190712818095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PikachuTitle_6
+      rect:
+        serializedVersion: 2
+        x: 773
+        y: 584
+        width: 145
+        height: 415
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2f0742266b233dd0800000000000000
+      internalID: -2507612849853493458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PikachuTitle_7
+      rect:
+        serializedVersion: 2
+        x: 2155
+        y: 557
+        width: 357
+        height: 444
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e227bb047f873b110800000000000000
+      internalID: 1275496122814263854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PikachuTitle_8
+      rect:
+        serializedVersion: 2
+        x: 2537
+        y: 953
+        width: 24
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f48d4a6af5f2c0200800000000000000
+      internalID: 147544975660603471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PikachuTitle_9
+      rect:
+        serializedVersion: 2
+        x: 1208
+        y: 511
+        width: 73
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ec2e439130b20360800000000000000
+      internalID: 7134458486679547106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PikachuTitle_10
+      rect:
+        serializedVersion: 2
+        x: 2256
+        y: 562
+        width: 13
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5530cb2391cf10a0800000000000000
+      internalID: -6908590465524681382
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PikachuTitle_11
+      rect:
+        serializedVersion: 2
+        x: 473
+        y: 523
+        width: 24
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6910b5810d73985b0800000000000000
+      internalID: -5365696114133892714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PikachuTitle_12
+      rect:
+        serializedVersion: 2
+        x: 1154
+        y: 507
+        width: 28
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce01db2ced33b4550800000000000000
+      internalID: 6146063148320100588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PikachuTitle_13
+      rect:
+        serializedVersion: 2
+        x: 1285
+        y: 526
+        width: 21
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34a137285745d7ce0800000000000000
+      internalID: -1405874644993238461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PikachuTitle_14
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 467
+        width: 94
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ececebb356a1f440800000000000000
+      internalID: 4967934742531730665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      PikachuTitle_0: -887530126729580177
+      PikachuTitle_1: -3937619746314863895
+      PikachuTitle_10: -6908590465524681382
+      PikachuTitle_11: -5365696114133892714
+      PikachuTitle_12: 6146063148320100588
+      PikachuTitle_13: -1405874644993238461
+      PikachuTitle_14: 4967934742531730665
+      PikachuTitle_2: -8791784285916757043
+      PikachuTitle_3: 5590959756084728714
+      PikachuTitle_4: -7489028171200040598
+      PikachuTitle_5: 4080033190712818095
+      PikachuTitle_6: -2507612849853493458
+      PikachuTitle_7: 1275496122814263854
+      PikachuTitle_8: 147544975660603471
+      PikachuTitle_9: 7134458486679547106
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
