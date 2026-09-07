@@ -38,14 +38,14 @@ public class Board : MonoBehaviour
         }
 
         PickRandomPairs();
-        CreateBoard();
+        CreateBoard(ShuffleTiles());
     }
 
     private void PickRandomPairs()
     {
         remainingPairs = new List<int>();
 
-        for (int i = 0; i < totalTiles; i++)
+        for (int i = 0; i < totalTiles / 2; i++)
         {
             int pairID = Random.Range(0, tileSprites.Length);
 
@@ -53,7 +53,28 @@ public class Board : MonoBehaviour
         }
     }
 
-    private void CreateBoard()
+    private List<int> ShuffleTiles()
+    {
+        List<int> duplicatedList = new List<int>();
+
+        for (int i = 0; i < remainingPairs.Count; i++)
+        {
+            duplicatedList.AddRange(new List<int> { remainingPairs[i], remainingPairs[i] });
+        }
+
+        for (int i = 0; i < duplicatedList.Count; i++)
+        {
+            int temp = duplicatedList[i];
+            int randomId = Random.Range(i, duplicatedList.Count);
+
+            duplicatedList[i] = duplicatedList[randomId];
+            duplicatedList[randomId] = temp;
+        }
+
+        return duplicatedList;
+    }
+
+    private void CreateBoard(List<int> duplicatedList)
     {
         tileObjects = new GameObject[totalRows, totalCols];
         idGrid = new int[totalRows, totalCols];
@@ -71,7 +92,7 @@ public class Board : MonoBehaviour
                 }
                 else
                 {
-                    int valueId = remainingPairs[i];
+                    int valueId = duplicatedList[i];
 
                     Vector3 position = new Vector3(startX + col, startY - row, 0.0f);
 
