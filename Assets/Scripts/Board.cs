@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Board : MonoBehaviour
@@ -7,13 +9,14 @@ public class Board : MonoBehaviour
     [SerializeField] private Sprite[] classicSprites;
     
     private Sprite[] tileSprites;
-
     private GameObject[,] tileObjects;
-     
-    private const int totalRows = 10;
-    private const int totalCols = 18;
+    private List<int> remainingPairs;
 
     public static int totalTiles = 8 * 16;
+
+    private const int totalRows = 10;
+    private const int totalCols = 18;
+    private int[,] idGrid;
 
     private float startX = -9.2f;
     private float startY = 4.5f;
@@ -34,18 +37,28 @@ public class Board : MonoBehaviour
             tileSprites = classicSprites;
         }
 
+        PickRandomPairs();
         CreateBoard();
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void PickRandomPairs()
     {
-        
+        remainingPairs = new List<int>();
+
+        for (int i = 0; i < totalTiles; i++)
+        {
+            int pairID = Random.Range(0, tileSprites.Length);
+
+            remainingPairs.Add(pairID);
+        }
     }
 
     private void CreateBoard()
     {
         tileObjects = new GameObject[totalRows, totalCols];
+        idGrid = new int[totalRows, totalCols];
+
+        int i = 0;
 
         for (int row = 0; row < totalRows; row++)
         {
@@ -54,15 +67,32 @@ public class Board : MonoBehaviour
                 if (row == 0 || row == totalRows - 1 || col == 0 || col == totalCols - 1)
                 {
                     tileObjects[row, col] = null;
+                    idGrid[row, col] = -1;
                 }
                 else
                 {
-                    Vector3 position = new Vector3(startX + col, startY - row, 0.0f);
-                    GameObject newTileObj = Instantiate(tilePrefab, position, Quaternion.identity) as GameObject;
+                    int valueId = remainingPairs[i];
 
+                    Vector3 position = new Vector3(startX + col, startY - row, 0.0f);
+
+                    GameObject newTileObj = Instantiate(tilePrefab, position, Quaternion.identity) as GameObject;
                     newTileObj.name = "Tile[" + row + ", " + col + "]";
                     newTileObj.transform.localScale = new Vector3(0.76f, 0.76f, 1f);
                     newTileObj.transform.SetParent(board.transform);
+
+                    Tile tileData = newTileObj.GetComponent<Tile>();
+                    tileData.row = row;
+                    tileData.col = col;
+                    tileData.id = valueId;
+
+                    SpriteRenderer spriteRenderer = newTileObj.GetComponent<SpriteRenderer>();
+                    spriteRenderer.sortingOrder = 2;
+                    spriteRenderer.sprite = tileSprites[tileData.id];
+
+                    tileObjects[row, col] = newTileObj;
+                    idGrid[row, col] = valueId;
+
+                    i++;
                 }
             }
         }

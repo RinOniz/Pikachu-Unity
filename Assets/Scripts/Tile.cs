@@ -23,7 +23,7 @@ public class Tile : MonoBehaviour
                 
                 gameController.SelectSecondTile(gameObject);
 
-                Debug.Log("Selected second tile: " + gameObject.name);
+                //Debug.Log("Selected second tile: " + gameObject.name);
             }
         }
         else
@@ -32,7 +32,7 @@ public class Tile : MonoBehaviour
 
             gameController.SelectFirstTile(gameObject);
 
-            Debug.Log("Selected first tile: " + gameObject.name);
+            //Debug.Log("Selected first tile: " + gameObject.name);
         }
     }
 }
