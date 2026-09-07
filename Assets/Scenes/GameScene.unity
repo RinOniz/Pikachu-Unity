@@ -1276,6 +1276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   board: {fileID: 1161495115}
   tilePrefab: {fileID: 5479609947842581412, guid: 6182d3a76897709429963b99b0fd89cc, type: 3}
+  classicSprites: []
 --- !u!114 &1673687286
 MonoBehaviour:
   m_ObjectHideFlags: 0

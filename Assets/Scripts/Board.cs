@@ -4,7 +4,12 @@ public class Board : MonoBehaviour
 {
     [SerializeField] private GameObject board;
     [SerializeField] private GameObject tilePrefab;
+    [SerializeField] private Sprite[] classicSprites;
+    
+    private Sprite[] tileSprites;
 
+    private GameObject[,] tileObjects;
+     
     private const int totalRows = 10;
     private const int totalCols = 18;
 
@@ -16,6 +21,19 @@ public class Board : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
+        int mode = PlayerPrefs.GetInt("GameMode", 0);
+
+        if (mode == 0)
+        {
+            classicSprites = Resources.LoadAll<Sprite>("Pokemon");
+            tileSprites = classicSprites;
+        }
+        else
+        {
+            classicSprites = Resources.LoadAll<Sprite>("Pokemon");
+            tileSprites = classicSprites;
+        }
+
         CreateBoard();
     }
 
