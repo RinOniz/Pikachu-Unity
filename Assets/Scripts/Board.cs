@@ -45,13 +45,15 @@ public class Board : MonoBehaviour
 
     private void CreateBoard()
     {
+        tileObjects = new GameObject[totalRows, totalCols];
+
         for (int row = 0; row < totalRows; row++)
         {
             for (int col = 0; col < totalCols; col++)
             {
                 if (row == 0 || row == totalRows - 1 || col == 0 || col == totalCols - 1)
                 {
-                    continue;
+                    tileObjects[row, col] = null;
                 }
                 else
                 {
