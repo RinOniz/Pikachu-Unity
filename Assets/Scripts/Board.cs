@@ -179,8 +179,10 @@ public class Board : MonoBehaviour
                     CheckLineCol(endPos.row, endPos.col, c) &&
                     CheckLineRow(c, startPos.row, endPos.row))
                 {
-                    if (drawPath) 
+                    if (drawPath)
+                    {
                         return true;
+                    }
                 }
             }
         }
@@ -200,6 +202,7 @@ public class Board : MonoBehaviour
                 return false;
             }
         }
+
         return true;
     }
 
@@ -215,6 +218,7 @@ public class Board : MonoBehaviour
                 return false;
             }
         }
+
         return true;
     }
 }
