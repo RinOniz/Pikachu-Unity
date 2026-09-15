@@ -221,4 +221,17 @@ public class Board : MonoBehaviour
 
         return true;
     }
+
+    public void Clear(Position firstPos, Position secondPos)
+    {
+        int valueId = idGrid[firstPos.row, firstPos.col];
+
+        idGrid[firstPos.row, firstPos.col] = -1;
+        idGrid[secondPos.row, secondPos.col] = -1;
+
+        tileObjects[firstPos.row, firstPos.col] = null;
+        tileObjects[secondPos.row, secondPos.col] = null;
+
+        remainingPairs.Remove(valueId);
+    }
 }

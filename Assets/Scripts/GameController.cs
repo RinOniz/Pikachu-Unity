@@ -41,6 +41,7 @@ public class GameController : MonoBehaviour
     {
         secondTile = tile;
 
+        CompareTwoTiles();
         ResetTile();
     }
 
@@ -50,5 +51,34 @@ public class GameController : MonoBehaviour
         secondTile = null;
 
         isSelected = false;
+    }
+
+    private void CompareTwoTiles()
+    {
+        if (firstTile != null && secondTile != null)
+        {
+            Tile firstTileData = firstTile.GetComponent<Tile>();
+            Tile secondTileData = secondTile.GetComponent<Tile>();
+
+            Position firstPos = new Position(firstTileData.row, firstTileData.col);
+            Position secondPos = new Position(secondTileData.row, secondTileData.col);
+
+            Board board = GetComponent<Board>();
+
+            bool isConnection = board.CheckLine(firstPos, secondPos, true);
+
+            if (firstTileData.id == secondTileData.id && isConnection)
+            {
+                Destroy(firstTile);
+                Destroy(secondTile);
+
+                board.Clear(firstPos, secondPos);
+            }
+            else
+            {
+                firstTile.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                secondTile.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            }
+        }
     }
 }
