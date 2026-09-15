@@ -65,9 +65,7 @@ public class GameController : MonoBehaviour
 
             Board board = GetComponent<Board>();
 
-            bool isConnection = board.CheckLine(firstPos, secondPos, true);
-
-            if (firstTileData.id == secondTileData.id && isConnection)
+            if (firstTileData.id == secondTileData.id && board.CheckLine(firstPos, secondPos, true))
             {
                 Destroy(firstTile);
                 Destroy(secondTile);

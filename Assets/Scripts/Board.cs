@@ -11,6 +11,7 @@ public class Board : MonoBehaviour
     private Sprite[] tileSprites;
     private GameObject[,] tileObjects;
     private List<int> remainingPairs;
+    private Path pathController;
 
     public static int totalTiles = 8 * 16;
 
@@ -35,6 +36,13 @@ public class Board : MonoBehaviour
         {
             classicSprites = Resources.LoadAll<Sprite>("Pokemon");
             tileSprites = classicSprites;
+        }
+
+        GameObject pathObj = GameObject.Find("Path");
+
+        if (pathObj != null)
+        {
+            pathController = pathObj.GetComponent<Path>();
         }
 
         PickRandomPairs();
@@ -125,6 +133,9 @@ public class Board : MonoBehaviour
         {
             if (drawPath)
             {
+                //GameObject.Find("Path").GetComponent<Path>().DrawPath(new List<Position> { startPos, endPos });
+                pathController.DrawPath(new List<Position> { startPos, endPos });
+
                 return true;
             }
         }
@@ -133,6 +144,9 @@ public class Board : MonoBehaviour
         {
             if (drawPath)
             {
+                //GameObject.Find("Path").GetComponent<Path>().DrawPath(new List<Position> { startPos, endPos });
+                pathController.DrawPath(new List<Position> { startPos, endPos });
+
                 return true;
             }
         }
@@ -143,6 +157,9 @@ public class Board : MonoBehaviour
         {
             if (drawPath)
             {
+                //GameObject.Find("Path").GetComponent<Path>().DrawPath(new List<Position> { startPos, new Position(startPos.row, endPos.col), endPos });
+                pathController.DrawPath(new List<Position> { startPos, new Position(startPos.row, endPos.col), endPos });
+
                 return true;
             }
         }
@@ -152,7 +169,12 @@ public class Board : MonoBehaviour
             CheckLineCol(endPos.row, startPos.col, endPos.col))
         {
             if (drawPath) 
+            {
+                //GameObject.Find("Path").GetComponent<Path>().DrawPath(new List<Position> { startPos, new Position(endPos.row, startPos.col), endPos });
+                pathController.DrawPath(new List<Position> { startPos, new Position(endPos.row, startPos.col), endPos });
+
                 return true;
+            }
         }
 
         for (int r = 0; r < totalRows; r++)
@@ -165,6 +187,9 @@ public class Board : MonoBehaviour
                 {
                     if (drawPath)
                     {
+                        //GameObject.Find("Path").GetComponent<Path>().DrawPath(new List<Position> { startPos, new Position(r, startPos.col), new Position(r, endPos.col), endPos });
+                        pathController.DrawPath(new List<Position> { startPos, new Position(r, startPos.col), new Position(r, endPos.col), endPos });
+
                         return true;
                     }
                 }
@@ -181,6 +206,9 @@ public class Board : MonoBehaviour
                 {
                     if (drawPath)
                     {
+                        //GameObject.Find("Path").GetComponent<Path>().DrawPath(new List<Position> { startPos, new Position(startPos.row, c), new Position(endPos.row, c), endPos });
+                        pathController.DrawPath(new List<Position> { startPos, new Position(startPos.row, c), new Position(endPos.row, c), endPos });
+
                         return true;
                     }
                 }

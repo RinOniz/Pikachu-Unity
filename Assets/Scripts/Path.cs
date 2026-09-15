@@ -5,6 +5,7 @@ public class Path : MonoBehaviour
 {
     [SerializeField] private GameObject pointPrefab;
 
+    private List<SpriteRenderer> activePoints = new List<SpriteRenderer>();
     private GameObject[,] paths;
 
     private const int totalRows = 10;
@@ -26,24 +27,10 @@ public class Path : MonoBehaviour
         if (timer > 0)
         {
             timer -= Time.deltaTime;
-            timer = timer > 0 ? timer : 0.0f;
 
-            if (timer == 0.0f)
+            if (timer <= 0)
             {
-                for (int row = 0; row < totalRows; row++)
-                {
-                    for (int col = 0; col < totalCols; col++)
-                    {
-                        GameObject point = paths[row, col];
-
-                        SpriteRenderer pointRenderer = point.GetComponent<SpriteRenderer>();
-
-                        if (pointRenderer.enabled)
-                        {
-                            pointRenderer.enabled = false;
-                        }
-                    }
-                }
+                HidePath(); 
             }
         }
     }
@@ -69,19 +56,71 @@ public class Path : MonoBehaviour
         }
     }
 
-    public void DrawPath(List<Position> positions)
+    public void DrawPath(List<Position> corners)
     {
-        foreach (Position position in positions)
+        HidePath();
+
+        for (int i = 0; i < corners.Count - 1; i++)
         {
-            int row = position.row;
-            int col = position.col;
+            Position p1 = corners[i];
+            Position p2 = corners[i + 1];
 
-            GameObject point = paths[row, col];
+            EnablePoint(p1.row, p1.col);
 
-            SpriteRenderer pointRenderer = point.GetComponent<SpriteRenderer>();
-            pointRenderer.enabled = true;
+            // 2. Nội suy và bật các điểm ở giữa
+            if (p1.row == p2.row) // Chạy theo chiều ngang
+            {
+                int step = p2.col > p1.col ? 1 : -1;
+
+                for (int c = p1.col + step; c != p2.col; c += step)
+                {
+                    EnablePoint(p1.row, c);
+                }
+            }
+            else if (p1.col == p2.col) // Chạy theo chiều dọc
+            {
+                int step = p2.row > p1.row ? 1 : -1;
+
+                for (int r = p1.row + step; r != p2.row; r += step)
+                {
+                    EnablePoint(r, p1.col);
+                }
+            }
+
+            // 3. Bật điểm kết thúc của đoạn thẳng
+            EnablePoint(p2.row, p2.col);
         }
 
-        timer = 0.7f;
+        timer = 0.5f;
+    }
+
+    // Hàm phụ trợ bật 1 điểm an toàn và đưa vào List
+    private void EnablePoint(int row, int col)
+    {
+        // Kiểm tra an toàn, tránh lỗi IndexOutOfRangeException nếu path đi ra viền ngoài lưới
+        if (row >= 0 && row < totalRows && col >= 0 && col < totalCols)
+        {
+            SpriteRenderer sr = paths[row, col].GetComponent<SpriteRenderer>();
+
+            // Nếu điểm này chưa bật thì mới bật và thêm vào List
+            if (!sr.enabled)
+            {
+                sr.enabled = true;
+                activePoints.Add(sr);
+            }
+        }
+    }
+
+    // Hàm dọn dẹp tối ưu
+    private void HidePath()
+    {
+        foreach (SpriteRenderer sr in activePoints)
+        {
+            sr.enabled = false;
+        }
+
+        activePoints.Clear(); // Dọn sạch List sau khi đã tắt
+
+        timer = 0.0f;
     }
 }
