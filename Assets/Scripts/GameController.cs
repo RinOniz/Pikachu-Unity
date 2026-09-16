@@ -79,4 +79,18 @@ public class GameController : MonoBehaviour
             }
         }
     }
+    
+    //public void GetHint(int totalGetHintTime)
+    //{
+    //    Board board = GetComponent<Board>();
+
+    //    bool hasHint = board.GetHint();
+
+    //    if (hasHint)
+    //    {
+    //        // score;
+    //    }
+
+    //    return hasHint;
+    //}
 }

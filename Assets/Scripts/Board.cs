@@ -262,4 +262,47 @@ public class Board : MonoBehaviour
 
         remainingPairs.Remove(valueId);
     }
+
+    public Position[] FindValidPairs()
+    {
+        Debug.Log("Vet can");
+
+        return FindNormalPairs();
+    }
+
+    private Position[] FindNormalPairs()
+    {
+        for (int row1 = 0; row1 < totalRows; row1++)
+        {
+            for (int col1 = 0; col1 < totalCols; col1++)
+            {
+                int id1 = idGrid[row1, col1];
+
+                if (id1 == -1)
+                {
+                    continue;
+                }
+
+                for (int row2 = row1; row2 < totalRows; row2++)
+                {
+                    int startCol = (row1 == row2) ? col1 + 1 : 0;
+
+                    for (int col2 = startCol; col2 < totalCols; col2++)
+                    {
+                        int id2 = idGrid[row2, col2];
+
+                        if (id1 == id2)
+                        {
+                            if (CheckLine(new Position(row1, col1), new Position(row2, col2), false))
+                            {
+                                return new Position[] { new Position(row1, col1), new Position(row2, col2) };
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
 }
