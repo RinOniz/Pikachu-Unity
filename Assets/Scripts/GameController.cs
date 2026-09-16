@@ -79,8 +79,8 @@ public class GameController : MonoBehaviour
             }
         }
     }
-    
-    //public void GetHint(int totalGetHintTime)
+
+    //public bool GetHint(int totalGetHintTime)
     //{
     //    Board board = GetComponent<Board>();
 

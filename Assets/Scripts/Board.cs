@@ -10,6 +10,8 @@ public class Board : MonoBehaviour
     
     private Sprite[] tileSprites;
     private GameObject[,] tileObjects;
+    private GameObject hintTileOne;
+    private GameObject hintTileTwo;
     private List<int> remainingPairs;
     private Path pathController;
 
@@ -177,18 +179,18 @@ public class Board : MonoBehaviour
             }
         }
 
-        for (int r = 0; r < totalRows; r++)
+        for (int row = 0; row < totalRows; row++)
         {
-            if (r != startPos.row && r != endPos.row && idGrid[r, startPos.col] == -1 && idGrid[r, endPos.col] == -1)
+            if (row != startPos.row && row != endPos.row && idGrid[row, startPos.col] == -1 && idGrid[row, endPos.col] == -1)
             {
-                if (CheckLineRow(startPos.col, startPos.row, r) &&
-                    CheckLineRow(endPos.col, endPos.row, r) &&
-                    CheckLineCol(r, startPos.col, endPos.col))
+                if (CheckLineRow(startPos.col, startPos.row, row) &&
+                    CheckLineRow(endPos.col, endPos.row, row) &&
+                    CheckLineCol(row, startPos.col, endPos.col))
                 {
                     if (drawPath)
                     {
-                        //GameObject.Find("Path").GetComponent<Path>().DrawPath(new List<Position> { startPos, new Position(r, startPos.col), new Position(r, endPos.col), endPos });
-                        pathController.DrawPath(new List<Position> { startPos, new Position(r, startPos.col), new Position(r, endPos.col), endPos });
+                        //GameObject.Find("Path").GetComponent<Path>().DrawPath(new List<Position> { startPos, new Position(row, startPos.col), new Position(row, endPos.col), endPos });
+                        pathController.DrawPath(new List<Position> { startPos, new Position(row, startPos.col), new Position(row, endPos.col), endPos });
 
                         return true;
                     }
@@ -196,18 +198,18 @@ public class Board : MonoBehaviour
             }
         }
 
-        for (int c = 0; c < totalCols; c++)
+        for (int col = 0; col < totalCols; col++)
         {
-            if (c != startPos.col && c != endPos.col && idGrid[startPos.row, c] == -1 && idGrid[endPos.row, c] == -1)
+            if (col != startPos.col && col != endPos.col && idGrid[startPos.row, col] == -1 && idGrid[endPos.row, col] == -1)
             {
-                if (CheckLineCol(startPos.row, startPos.col, c) &&
-                    CheckLineCol(endPos.row, endPos.col, c) &&
-                    CheckLineRow(c, startPos.row, endPos.row))
+                if (CheckLineCol(startPos.row, startPos.col, col) &&
+                    CheckLineCol(endPos.row, endPos.col, col) &&
+                    CheckLineRow(col, startPos.row, endPos.row))
                 {
                     if (drawPath)
                     {
-                        //GameObject.Find("Path").GetComponent<Path>().DrawPath(new List<Position> { startPos, new Position(startPos.row, c), new Position(endPos.row, c), endPos });
-                        pathController.DrawPath(new List<Position> { startPos, new Position(startPos.row, c), new Position(endPos.row, c), endPos });
+                        //GameObject.Find("Path").GetComponent<Path>().DrawPath(new List<Position> { startPos, new Position(startPos.row, col), new Position(endPos.row, col), endPos });
+                        pathController.DrawPath(new List<Position> { startPos, new Position(startPos.row, col), new Position(endPos.row, col), endPos });
 
                         return true;
                     }
@@ -223,9 +225,9 @@ public class Board : MonoBehaviour
         int min = Mathf.Min(row1, row2);
         int max = Mathf.Max(row1, row2);
 
-        for (int r = min + 1; r < max; r++)
+        for (int row = min + 1; row < max; row++)
         {
-            if (idGrid[r, col] != -1)
+            if (idGrid[row, col] != -1)
             {
                 return false;
             }
@@ -239,9 +241,9 @@ public class Board : MonoBehaviour
         int min = Mathf.Min(col1, col2);
         int max = Mathf.Max(col1, col2);
 
-        for (int c = min + 1; c < max; c++)
+        for (int col = min + 1; col < max; col++)
         {
-            if (idGrid[row, c] != -1)
+            if (idGrid[row, col] != -1)
             {
                 return false;
             }
@@ -265,9 +267,108 @@ public class Board : MonoBehaviour
 
     public Position[] FindValidPairs()
     {
+        Position[] adjacentPair = FindAdjacentPairs();
+
+        if (adjacentPair != null)
+        {
+            Debug.Log("Lien ke");
+
+            return adjacentPair;
+        }
+
+        Position[] edgePair = FindEdgePairs();
+        if (edgePair != null)
+        {
+            Debug.Log("Mep");
+
+            return edgePair;
+        }
+
         Debug.Log("Vet can");
 
         return FindNormalPairs();
+    }
+
+    private Position[] FindAdjacentPairs()
+    {
+        for (int row = 1; row < totalRows - 1; row++)
+        {
+            for (int col = 1; col < totalCols - 1; col++)
+            {
+                int id = idGrid[row, col];
+
+                if (id == -1)
+                {
+                    continue;
+                }
+
+                if (col + 1 < totalCols - 1 && idGrid[row, col + 1] == id)
+                {
+                    if (CheckLine(new Position(row, col), new Position(row, col + 1), false))
+                    {
+                        return new Position[] { new Position(row, col), new Position(row, col + 1) };
+                    }
+                }
+
+                if (row + 1 < totalRows - 1 && idGrid[row + 1, col] == id)
+                {
+                    if (CheckLine(new Position(row, col), new Position(row + 1, col), false))
+                    {
+                        return new Position[] { new Position(row, col), new Position(row + 1, col) };
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private Position[] FindEdgePairs()
+    {
+        List<Position> edgeTiles = new List<Position>();
+
+        for (int row = 1; row < totalRows - 1; row++)
+        {
+            for (int col = 1; col < totalCols - 1; col++)
+            {
+                if (idGrid[row, col] != -1)
+                {
+                    int depth = GetLayerDepth(row, col);
+
+                    if (depth <= 2)
+                    {
+                        edgeTiles.Add(new Position(row, col));
+                    }
+                }
+            }
+        }
+
+        edgeTiles.Sort((p1, p2) =>
+        {
+            int depth1 = GetLayerDepth(p1.row, p1.col);
+            int depth2 = GetLayerDepth(p2.row, p2.col);
+
+            return depth1.CompareTo(depth2);
+        });
+
+        for (int i = 0; i < edgeTiles.Count; i++)
+        {
+            for (int j = i + 1; j < edgeTiles.Count; j++)
+            {
+                Position pos1 = edgeTiles[i];
+                Position pos2 = edgeTiles[j];
+
+                if (idGrid[pos1.row, pos1.col] == idGrid[pos2.row, pos2.col])
+                {
+                    if (CheckLine(pos1, pos2, false))
+                    {
+                        return new Position[] { pos1, pos2 };
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     private Position[] FindNormalPairs()
@@ -305,4 +406,33 @@ public class Board : MonoBehaviour
 
         return null;
     }
+
+    private int GetLayerDepth(int row, int col)
+    {
+        int distTop = row;
+        int distBottom = (totalRows - 1) - row;
+        int distLeft = col;
+        int distRight = (totalCols - 1) - col;
+
+        return Mathf.Min(distTop, distBottom, distLeft, distRight);
+    }
+
+    //public bool GetHint()
+    //{
+    //    Position[] pairs = FindValidPairs();
+
+    //    if (pairs != null)
+    //    {
+    //        hintTileOne = tileObjects[pairs[0].row, pairs[0].col];
+    //        hintTileTwo = tileObjects[pairs[1].row, pairs[1].col];
+
+    //        Color color = new Color(113f / 255f, 204f / 255f, 86f / 255f, 1.0f);
+    //        hintTileOne.transform.GetChild(0).GetComponent<SpriteRenderer>().color = color;
+    //        hintTileTwo.transform.GetChild(0).GetComponent<SpriteRenderer>().color = color;
+
+    //        return true;
+    //    }
+
+    //    return false;
+    //}
 }
