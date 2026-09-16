@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class GameController : MonoBehaviour
 {
@@ -71,26 +73,41 @@ public class GameController : MonoBehaviour
                 Destroy(secondTile);
 
                 board.Clear(firstPos, secondPos);
+
+                //AddScore();
+
+                //clearTiles += 2;
+                //audioSource.PlayOneShot(correctSound);
+
+                //if (clearTiles >= totalTiles)
+                //{
+                //    isGameOver = true;
+                //    audioSource.PlayOneShot(winSound);
+                //}
             }
             else
             {
                 firstTile.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
                 secondTile.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+                //score -= 30;
+
+                //audioSource.PlayOneShot(incorrectSound);
             }
         }
     }
 
-    //public bool GetHint(int totalGetHintTime)
-    //{
-    //    Board board = GetComponent<Board>();
+    public bool GetHint(int totalGetHintTime)
+    {
+        Board board = GetComponent<Board>();
 
-    //    bool hasHint = board.GetHint();
+        bool hasHint = board.GetHint();
 
-    //    if (hasHint)
-    //    {
-    //        // score;
-    //    }
+        if (hasHint)
+        {
+            //score -= (10 * totalGetHintTime);
+        }
 
-    //    return hasHint;
-    //}
+        return hasHint;
+    }
 }

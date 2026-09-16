@@ -49,6 +49,7 @@ public class Board : MonoBehaviour
 
         PickRandomPairs();
         CreateBoard(ShuffleTiles());
+        ClearHintTiles();
     }
 
     private void PickRandomPairs()
@@ -135,22 +136,20 @@ public class Board : MonoBehaviour
         {
             if (drawPath)
             {
-                //GameObject.Find("Path").GetComponent<Path>().DrawPath(new List<Position> { startPos, endPos });
                 pathController.DrawPath(new List<Position> { startPos, endPos });
-
-                return true;
             }
+
+            return true;
         }
 
         if (startPos.col == endPos.col && CheckLineRow(startPos.col, startPos.row, endPos.row))
         {
             if (drawPath)
             {
-                //GameObject.Find("Path").GetComponent<Path>().DrawPath(new List<Position> { startPos, endPos });
                 pathController.DrawPath(new List<Position> { startPos, endPos });
-
-                return true;
             }
+
+            return true;
         }
 
         if (idGrid[startPos.row, endPos.col] == -1 &&
@@ -159,11 +158,10 @@ public class Board : MonoBehaviour
         {
             if (drawPath)
             {
-                //GameObject.Find("Path").GetComponent<Path>().DrawPath(new List<Position> { startPos, new Position(startPos.row, endPos.col), endPos });
                 pathController.DrawPath(new List<Position> { startPos, new Position(startPos.row, endPos.col), endPos });
-
-                return true;
             }
+
+            return true;
         }
 
         if (idGrid[endPos.row, startPos.col] == -1 &&
@@ -172,11 +170,10 @@ public class Board : MonoBehaviour
         {
             if (drawPath) 
             {
-                //GameObject.Find("Path").GetComponent<Path>().DrawPath(new List<Position> { startPos, new Position(endPos.row, startPos.col), endPos });
                 pathController.DrawPath(new List<Position> { startPos, new Position(endPos.row, startPos.col), endPos });
-
-                return true;
             }
+
+            return true;
         }
 
         for (int row = 0; row < totalRows; row++)
@@ -189,11 +186,10 @@ public class Board : MonoBehaviour
                 {
                     if (drawPath)
                     {
-                        //GameObject.Find("Path").GetComponent<Path>().DrawPath(new List<Position> { startPos, new Position(row, startPos.col), new Position(row, endPos.col), endPos });
                         pathController.DrawPath(new List<Position> { startPos, new Position(row, startPos.col), new Position(row, endPos.col), endPos });
-
-                        return true;
                     }
+
+                    return true;
                 }
             }
         }
@@ -208,15 +204,13 @@ public class Board : MonoBehaviour
                 {
                     if (drawPath)
                     {
-                        //GameObject.Find("Path").GetComponent<Path>().DrawPath(new List<Position> { startPos, new Position(startPos.row, col), new Position(endPos.row, col), endPos });
                         pathController.DrawPath(new List<Position> { startPos, new Position(startPos.row, col), new Position(endPos.row, col), endPos });
-
-                        return true;
                     }
+
+                    return true;
                 }
             }
         }
-
         return false;
     }
          
@@ -254,7 +248,7 @@ public class Board : MonoBehaviour
 
     public void Clear(Position firstPos, Position secondPos)
     {
-        int valueId = idGrid[firstPos.row, firstPos.col];
+        int valueID = idGrid[firstPos.row, firstPos.col];
 
         idGrid[firstPos.row, firstPos.col] = -1;
         idGrid[secondPos.row, secondPos.col] = -1;
@@ -262,7 +256,28 @@ public class Board : MonoBehaviour
         tileObjects[firstPos.row, firstPos.col] = null;
         tileObjects[secondPos.row, secondPos.col] = null;
 
-        remainingPairs.Remove(valueId);
+        ClearHintTiles();
+        RestoreHintTilesColor();
+
+        remainingPairs.Remove(valueID);
+
+        //int currentLevel = PlayerPrefs.GetInt("GameLevel", 1);
+
+        //if (currentLevel == 2)
+        //{
+        //ShiftDown();
+        //}
+        //else if (currentLevel == 3)
+        //{
+        //ShiftUp();
+        //}
+
+        //if (remainingPairs.Count > 0 && HasAnyMoves() == false)
+        //{
+        //    Debug.Log("Het duong, tu dong Change");
+
+        //    Change();
+        //}
     }
 
     public Position[] FindValidPairs()
@@ -417,22 +432,47 @@ public class Board : MonoBehaviour
         return Mathf.Min(distTop, distBottom, distLeft, distRight);
     }
 
-    //public bool GetHint()
-    //{
-    //    Position[] pairs = FindValidPairs();
+    public bool GetHint()
+    {
+        Position[] pair = FindValidPairs();
 
-    //    if (pairs != null)
-    //    {
-    //        hintTileOne = tileObjects[pairs[0].row, pairs[0].col];
-    //        hintTileTwo = tileObjects[pairs[1].row, pairs[1].col];
+        if (pair != null)
+        {
+            hintTileOne = tileObjects[pair[0].row, pair[0].col];
+            hintTileTwo = tileObjects[pair[1].row, pair[1].col];
 
-    //        Color color = new Color(113f / 255f, 204f / 255f, 86f / 255f, 1.0f);
-    //        hintTileOne.transform.GetChild(0).GetComponent<SpriteRenderer>().color = color;
-    //        hintTileTwo.transform.GetChild(0).GetComponent<SpriteRenderer>().color = color;
+            Color color = new Color(113f / 255f, 204f / 255f, 86f / 255f, 1.0f);
+            hintTileOne.transform.GetChild(0).GetComponent<SpriteRenderer>().color = color;
+            hintTileTwo.transform.GetChild(0).GetComponent<SpriteRenderer>().color = color;
 
-    //        return true;
-    //    }
+            return true;
+        }
 
-    //    return false;
-    //}
+        return false;
+    }
+
+    private void RestoreHintTilesColor()
+    {
+        if (hintTileOne != null && hintTileTwo != null)
+        {
+            Color cleanColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+            hintTileOne.transform.GetChild(0).GetComponent<SpriteRenderer>().color = cleanColor;
+            hintTileTwo.transform.GetChild(0).GetComponent<SpriteRenderer>().color = cleanColor;
+        }
+    }
+
+    private void ClearHintTiles()
+    {
+        if (hintTileOne != null && hintTileTwo != null)
+        {
+            Color cleanColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+            hintTileOne.transform.GetChild(0).GetComponent<SpriteRenderer>().color = cleanColor;
+            hintTileTwo.transform.GetChild(0).GetComponent<SpriteRenderer>().color = cleanColor;
+        }
+
+        hintTileOne = null;
+        hintTileTwo = null;
+    }
 }
