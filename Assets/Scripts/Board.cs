@@ -272,12 +272,12 @@ public class Board : MonoBehaviour
         //ShiftUp();
         //}
 
-        //if (remainingPairs.Count > 0 && HasAnyMoves() == false)
-        //{
-        //    Debug.Log("Het duong, tu dong Change");
+        if (remainingPairs.Count > 0 && HasAnyMoves() == false)
+        {
+            Debug.Log("Het duong, tu dong Change");
 
-        //    Change();
-        //}
+            Change();
+        }
     }
 
     public Position[] FindValidPairs()
@@ -507,5 +507,12 @@ public class Board : MonoBehaviour
 
         hintTileOne = null;
         hintTileTwo = null;
+    }
+
+    private bool HasAnyMoves()
+    {
+        Position[] pair = FindValidPairs();
+
+        return pair != null;
     }
 }
