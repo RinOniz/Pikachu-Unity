@@ -515,4 +515,9 @@ public class Board : MonoBehaviour
 
         return pair != null;
     }
+
+    public int GetTotalTiles()
+    {
+        return totalTiles;
+    }
 }

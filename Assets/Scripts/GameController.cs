@@ -10,12 +10,20 @@ public class GameController : MonoBehaviour
     private GameObject secondTile;
 
     private bool isSelected;
+    private bool isGameOver;
     private bool isPause;
+
+    private int totalTiles;
+    private int clearTiles;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         isPause = false;
+        isGameOver = false;
+
+        clearTiles = 0;
+        totalTiles = GetComponent<Board>().GetTotalTiles();
     }
 
     // Update is called once per frame
@@ -26,7 +34,7 @@ public class GameController : MonoBehaviour
         //    scoreText.text = score.ToString();
         //}
 
-        //CheckWin();
+        CheckWin();
     }
 
     public bool IsSelected()
@@ -41,8 +49,11 @@ public class GameController : MonoBehaviour
 
     public void SelectFirstTile(GameObject tile)
     {
-        firstTile = tile;
-        isSelected = true;
+        if (!isGameOver)
+        {
+            firstTile = tile;
+            isSelected = true;
+        }
     }
 
     public void SelectSecondTile(GameObject tile)
@@ -50,10 +61,10 @@ public class GameController : MonoBehaviour
         secondTile = tile;
 
         CompareTwoTiles();
-        ResetTile();
+        ResetTiles();
     }
 
-    private void ResetTile()
+    private void ResetTiles()
     {
         firstTile = null;
         secondTile = null;
@@ -85,11 +96,11 @@ public class GameController : MonoBehaviour
                 //clearTiles += 2;
                 //audioSource.PlayOneShot(correctSound);
 
-                //if (clearTiles >= totalTiles)
-                //{
-                //    isGameOver = true;
-                //    audioSource.PlayOneShot(winSound);
-                //}
+                if (clearTiles >= totalTiles)
+                {
+                    isGameOver = true;
+                    //audioSource.PlayOneShot(winSound);
+                }
             }
             else
             {
@@ -125,5 +136,31 @@ public class GameController : MonoBehaviour
     public void SetPause(bool pause)
     {
         isPause = pause;
+    }
+
+    public void SetGameOver()
+    {
+        isGameOver = true;
+        //audioSource.PlayOneShot(gameOverSound);
+
+        ResetTiles();
+    }
+
+    public bool IsGameOver()
+    {
+        return isGameOver;
+    }
+
+    private void CheckWin()
+    {
+        if (isGameOver /* && !isResultShown */)
+        {
+            //isResultShown = true;
+            board.SetActive(false);
+
+            float remainTime = GetComponent<RoundCountdown>().GetRemainTime();
+
+            //resultPanel.GetComponent<ResultPanel>().Show(clearTiles >= totalTiles, (this.score - 100), remainTime, avgNodes, avgTime);
+        }
     }
 }
