@@ -451,6 +451,39 @@ public class Board : MonoBehaviour
         return false;
     }
 
+    public void Change()
+    {
+        List<int> newBoardLayout = ShuffleTiles();
+
+        int indexID = 0;
+
+        for (int row = 0; row < tileObjects.GetLength(0); row++)
+        {
+            for (int col = 0; col < tileObjects.GetLength(1); col++)
+            {
+                GameObject tile = tileObjects[row, col];
+
+                if (tile == null)
+                {
+                    continue;
+                }
+
+                int id = newBoardLayout[indexID];
+
+                Tile tileData = tile.GetComponent<Tile>();
+                tileData.id = id;
+
+                SpriteRenderer spriteRender = tile.GetComponent<SpriteRenderer>();
+                spriteRender.sprite = tileSprites[tileData.id];
+
+                idGrid[row, col] = id;
+                indexID++;
+            }
+        }
+
+        ClearHintTiles();
+    }
+
     private void RestoreHintTilesColor()
     {
         if (hintTileOne != null && hintTileTwo != null)
