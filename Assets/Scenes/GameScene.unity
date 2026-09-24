@@ -1274,6 +1274,7 @@ GameObject:
   - component: {fileID: 1673687283}
   - component: {fileID: 1673687287}
   - component: {fileID: 1673687288}
+  - component: {fileID: 1673687289}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -1364,6 +1365,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   changeButton: {fileID: 1203787320}
+--- !u!114 &1673687289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1673687282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e59626875aa7fa54785b515ae7f8d981, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseButton: {fileID: 2074247689}
+  pauseText: {fileID: 611118402}
+  pauseImage: {fileID: 21300000, guid: 4530bea760bcaf44eb824a4bf4143f40, type: 3}
+  resumeImage: {fileID: 21300000, guid: 9928b7d11c1b3b549a239755d795c577, type: 3}
 --- !u!1 &1680855086
 GameObject:
   m_ObjectHideFlags: 0

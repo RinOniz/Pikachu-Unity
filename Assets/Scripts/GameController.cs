@@ -10,17 +10,23 @@ public class GameController : MonoBehaviour
     private GameObject secondTile;
 
     private bool isSelected;
+    private bool isPause;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
-        
+        isPause = false;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        
+        //if (!isPause && !isGameOver)
+        //{
+        //    scoreText.text = score.ToString();
+        //}
+
+        //CheckWin();
     }
 
     public bool IsSelected()
@@ -109,5 +115,15 @@ public class GameController : MonoBehaviour
         }
 
         return hasHint;
+    }
+
+    public bool IsPause()
+    {
+        return isPause;
+    }
+
+    public void SetPause(bool pause)
+    {
+        isPause = pause;
     }
 }

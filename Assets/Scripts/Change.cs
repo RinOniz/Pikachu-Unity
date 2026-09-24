@@ -14,10 +14,10 @@ public class Change : MonoBehaviour
 
     private void ChangeBoard()
     {
-        //if (GetComponent<GameController>().IsGameOver() || GetComponent<GameController>().IsPause())
-        //{
-        //    return;
-        //}
+        if (/* GetComponent<GameController>().IsGameOver()  || */ GetComponent<GameController>().IsPause())
+        {
+            return;
+        }
 
         GetComponent<Board>().Change();
         GetComponent<Hint>().ChangeText("HINT");

@@ -15,6 +15,11 @@ public class Tile : MonoBehaviour
 
         SpriteRenderer tileRenderer = tileBackground.GetComponent<SpriteRenderer>();
 
+        if (gameController.IsPause() /* || gameController.IsGameOver() */)
+        {
+            return;
+        }
+
         if (gameController.IsSelected())
         {
             if (gameController.GetFirstTile() != gameObject)

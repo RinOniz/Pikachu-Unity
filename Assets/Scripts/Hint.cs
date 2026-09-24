@@ -17,6 +17,11 @@ public class Hint : MonoBehaviour
 
     private void GetHint()
     {
+        if (/* GetComponent<GameController>().IsGameOver()  || */ GetComponent<GameController>().IsPause())
+        {
+            return;
+        }
+
         if (hintText.text == "HINT")
         {
             bool hasHint = GetComponent<GameController>().GetHint(totalGetHintTime);
