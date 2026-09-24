@@ -1,9 +1,12 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SocialPlatforms.Impl;
 
 public class GameController : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI scoreText;
+
     [SerializeField] private GameObject board;
 
     private GameObject firstTile;
@@ -13,12 +16,15 @@ public class GameController : MonoBehaviour
     private bool isGameOver;
     private bool isPause;
 
+    private int score;
     private int totalTiles;
     private int clearTiles;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
+        score = 0;
+
         isPause = false;
         isGameOver = false;
 
@@ -29,10 +35,10 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        //if (!isPause && !isGameOver)
-        //{
-        //    scoreText.text = score.ToString();
-        //}
+        if (!isPause && !isGameOver)
+        {
+            scoreText.text = score.ToString();
+        }
 
         CheckWin();
     }
@@ -91,9 +97,9 @@ public class GameController : MonoBehaviour
 
                 board.Clear(firstPos, secondPos);
 
-                //AddScore();
+                AddScore();
 
-                //clearTiles += 2;
+                clearTiles += 2;
                 //audioSource.PlayOneShot(correctSound);
 
                 if (clearTiles >= totalTiles)
@@ -107,7 +113,7 @@ public class GameController : MonoBehaviour
                 firstTile.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
                 secondTile.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
-                //score -= 30;
+                score -= 25;
 
                 //audioSource.PlayOneShot(incorrectSound);
             }
@@ -122,10 +128,22 @@ public class GameController : MonoBehaviour
 
         if (hasHint)
         {
-            //score -= (10 * totalGetHintTime);
+            score -= (10 * totalGetHintTime);
         }
 
         return hasHint;
+    }
+
+    private void AddScore()
+    {
+        int point = 50;
+
+        score += point;
+    }
+
+    public void MinusChangeScore(int totalChanges)
+    {
+        score -= (25 * totalChanges);
     }
 
     public bool IsPause()

@@ -17,7 +17,7 @@ public class Hint : MonoBehaviour
 
     private void GetHint()
     {
-        if (/* GetComponent<GameController>().IsGameOver()  || */ GetComponent<GameController>().IsPause())
+        if (GetComponent<GameController>().IsGameOver() || GetComponent<GameController>().IsPause())
         {
             return;
         }
