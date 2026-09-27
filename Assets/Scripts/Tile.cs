@@ -15,7 +15,7 @@ public class Tile : MonoBehaviour
 
         SpriteRenderer tileRenderer = tileBackground.GetComponent<SpriteRenderer>();
 
-        if (gameController.IsPause() /* || gameController.IsGameOver() */)
+        if (gameController.IsPause() || gameController.IsGameOver())
         {
             return;
         }

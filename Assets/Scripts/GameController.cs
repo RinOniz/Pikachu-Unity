@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
 
+    [SerializeField] private GameObject resultPanel;
     [SerializeField] private GameObject board;
 
     private GameObject firstTile;
@@ -15,6 +16,7 @@ public class GameController : MonoBehaviour
     private bool isSelected;
     private bool isGameOver;
     private bool isPause;
+    private bool isResultShown = false;
 
     private int score;
     private int totalTiles;
@@ -171,14 +173,14 @@ public class GameController : MonoBehaviour
 
     private void CheckWin()
     {
-        if (isGameOver /* && !isResultShown */)
+        if (isGameOver && !isResultShown)
         {
-            //isResultShown = true;
+            isResultShown = true;
             board.SetActive(false);
 
             float remainTime = GetComponent<RoundCountdown>().GetRemainTime();
 
-            //resultPanel.GetComponent<ResultPanel>().Show(clearTiles >= totalTiles, (this.score - 100), remainTime, avgNodes, avgTime);
+            resultPanel.GetComponent<ResultPanel>().Show(clearTiles >= totalTiles, score, remainTime);
         }
     }
 }
