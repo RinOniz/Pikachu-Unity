@@ -14,6 +14,8 @@ public class ModeSelectPanel : MonoBehaviour
 
     [SerializeField] private GameObject modeSelectPanel;
 
+    [SerializeField] private LevelSelectPanel levelSelectPanel;
+
     private void Start()
     {
         returnButton.onClick.AddListener(HidePanel);
@@ -36,9 +38,9 @@ public class ModeSelectPanel : MonoBehaviour
     {
         PlayerPrefs.SetInt("GameMode", 0);
 
-        //HidePanel();
+        HidePanel();
 
-        //levelSelectPanel.Show();
+        levelSelectPanel.Show();
     }
 
     private void SelectFunnyMode()
