@@ -6,8 +6,11 @@ public class Board : MonoBehaviour
 {
     [SerializeField] private GameObject board;
     [SerializeField] private GameObject tilePrefab;
+
     [SerializeField] private Sprite[] classicSprites;
-    
+    [SerializeField] private Sprite[] funnySprites;
+
+
     private Sprite[] tileSprites;
     private GameObject[,] tileObjects;
     private GameObject hintTileOne;
@@ -33,6 +36,11 @@ public class Board : MonoBehaviour
         {
             classicSprites = Resources.LoadAll<Sprite>("Pokemon");
             tileSprites = classicSprites;
+        }
+        else if (mode == 1)
+        {
+            funnySprites = Resources.LoadAll<Sprite>("Funny");
+            tileSprites = funnySprites;
         }
         else
         {
@@ -261,16 +269,16 @@ public class Board : MonoBehaviour
 
         remainingPairs.Remove(valueID);
 
-        //int currentLevel = PlayerPrefs.GetInt("GameLevel", 1);
+        int currentLevel = PlayerPrefs.GetInt("GameLevel", 1);
 
-        //if (currentLevel == 2)
-        //{
-        //ShiftDown();
-        //}
-        //else if (currentLevel == 3)
-        //{
-        //ShiftUp();
-        //}
+        if (currentLevel == 2)
+        {
+            ShiftDown();
+        }
+        else if (currentLevel == 3)
+        {
+            //ShiftUp();
+        }
 
         if (remainingPairs.Count > 0 && HasAnyMoves() == false)
         {
@@ -483,6 +491,67 @@ public class Board : MonoBehaviour
 
         ClearHintTiles();
     }
+
+    private void MoveTile(int fromRow, int col, int toRow)
+    {
+        idGrid[toRow, col] = idGrid[fromRow, col];
+        idGrid[fromRow, col] = -1;
+
+        tileObjects[toRow, col] = tileObjects[fromRow, col];
+        tileObjects[fromRow, col] = null;
+
+        GameObject tileObj = tileObjects[toRow, col];
+
+        Tile tileData = tileObj.GetComponent<Tile>();
+        tileData.row = toRow;
+
+        tileObj.transform.position = new Vector3(startX + col, startY - toRow, 0.0f);
+        tileObj.name = "Tile[" + toRow + ", " + col + "]";
+    }
+
+    private void ShiftDown()
+    {
+        for (int c = 1; c < totalCols - 1; c++)
+        {
+            for (int r = totalRows - 2; r >= 1; r--)
+            {
+                if (idGrid[r, c] == -1)
+                {
+                    for (int k = r - 1; k >= 1; k--)
+                    {
+                        if (idGrid[k, c] != -1)
+                        {
+                            MoveTile(k, c, r);
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //private void ShiftUp()
+    //{
+    //    for (int c = 1; c < totalCols - 1; c++)
+    //    {
+    //        for (int r = 1; r < totalRows - 1; r++)
+    //        {
+    //            if (idGrid[r, c] == -1)
+    //            {
+    //                for (int k = r + 1; k < totalRows - 1; k++)
+    //                {
+    //                    if (idGrid[k, c] != -1)
+    //                    {
+    //                        MoveTile(k, c, r);
+
+    //                        break;
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
     private void RestoreHintTilesColor()
     {
