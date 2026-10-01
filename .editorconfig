@@ -1,0 +1,8 @@
+root = true
+
+[*.cs]
+# Bỏ qua cảnh báo biến không được gán giá trị (CS0649)
+dotnet_diagnostic.CS0649.severity = none
+
+# Tắt đề xuất biến thành readonly (IDE0044) - Bắt buộc cho Unity
+dotnet_diagnostic.IDE0044.severity = none

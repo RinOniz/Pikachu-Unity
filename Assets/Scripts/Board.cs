@@ -10,7 +10,6 @@ public class Board : MonoBehaviour
     [SerializeField] private Sprite[] classicSprites;
     [SerializeField] private Sprite[] funnySprites;
 
-
     private Sprite[] tileSprites;
     private GameObject[,] tileObjects;
     private GameObject hintTileOne;
@@ -176,7 +175,7 @@ public class Board : MonoBehaviour
             CheckLineRow(startPos.col, startPos.row, endPos.row) &&
             CheckLineCol(endPos.row, startPos.col, endPos.col))
         {
-            if (drawPath) 
+            if (drawPath)
             {
                 pathController.DrawPath(new List<Position> { startPos, new Position(endPos.row, startPos.col), endPos });
             }
@@ -221,7 +220,7 @@ public class Board : MonoBehaviour
         }
         return false;
     }
-         
+
     private bool CheckLineRow(int col, int row1, int row2)
     {
         int min = Mathf.Min(row1, row2);
@@ -277,7 +276,7 @@ public class Board : MonoBehaviour
         }
         else if (currentLevel == 3)
         {
-            //ShiftUp();
+            ShiftUp();
         }
 
         if (remainingPairs.Count > 0 && HasAnyMoves() == false)
@@ -531,27 +530,27 @@ public class Board : MonoBehaviour
         }
     }
 
-    //private void ShiftUp()
-    //{
-    //    for (int c = 1; c < totalCols - 1; c++)
-    //    {
-    //        for (int r = 1; r < totalRows - 1; r++)
-    //        {
-    //            if (idGrid[r, c] == -1)
-    //            {
-    //                for (int k = r + 1; k < totalRows - 1; k++)
-    //                {
-    //                    if (idGrid[k, c] != -1)
-    //                    {
-    //                        MoveTile(k, c, r);
+    private void ShiftUp()
+    {
+        for (int c = 1; c < totalCols - 1; c++)
+        {
+            for (int r = 1; r < totalRows - 1; r++)
+            {
+                if (idGrid[r, c] == -1)
+                {
+                    for (int k = r + 1; k < totalRows - 1; k++)
+                    {
+                        if (idGrid[k, c] != -1)
+                        {
+                            MoveTile(k, c, r);
 
-    //                        break;
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     private void RestoreHintTilesColor()
     {

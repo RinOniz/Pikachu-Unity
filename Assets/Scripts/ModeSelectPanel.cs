@@ -45,10 +45,11 @@ public class ModeSelectPanel : MonoBehaviour
 
     private void SelectFunnyMode()
     {
-        //menuScript.PlaySound();
+        PlayerPrefs.SetInt("GameMode", 1);
 
-        //SceneManager.LoadScene("GameScene");
-        //PlayerPrefs.SetInt("GameMode", 1);
+        HidePanel();
+
+        levelSelectPanel.Show();
     }
 
     private void SelectOnlineMode()
