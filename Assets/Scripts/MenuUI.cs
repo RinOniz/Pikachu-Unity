@@ -13,7 +13,7 @@ public class MenuUI : MonoBehaviour
     [SerializeField] private Button closeButton;
 
     [SerializeField] private GameObject modeSelectPanel;
-    //[SerializeField] private GameObject tutorialPanel;
+    [SerializeField] private GameObject tutorialPanel;
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip startGameSound;
@@ -23,7 +23,7 @@ public class MenuUI : MonoBehaviour
     {
         playButton.onClick.AddListener(QuickPlayClassic);
         modeSelectButton.onClick.AddListener(OpenModeSelect);
-        //tutorialButton.onClick.AddListener(OpenTutorialPanel);
+        tutorialButton.onClick.AddListener(OpenTutorialPanel);
         closeButton.onClick.AddListener(CloseGame);
     }
 
@@ -50,7 +50,7 @@ public class MenuUI : MonoBehaviour
 
     private void OpenTutorialPanel()
     {
-        //tutorialPanel.GetComponent<TutorialPanel>().Show();
+        tutorialPanel.GetComponent<TutorialPanel>().Show();
     }
 
     private void CloseGame()
