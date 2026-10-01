@@ -2488,7 +2488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roundCountdownText: {fileID: 1981602407}
-  roundTime: 5
+  roundTime: 450
 --- !u!82 &1673687291
 AudioSource:
   m_ObjectHideFlags: 0
