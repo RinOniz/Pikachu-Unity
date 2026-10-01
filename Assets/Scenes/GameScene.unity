@@ -2427,7 +2427,11 @@ MonoBehaviour:
   resultPanel: {fileID: 532477999}
   board: {fileID: 1161495115}
   audioSource: {fileID: 1673687291}
+  correctSound: {fileID: 8300000, guid: 13c2e6c7e5ff4f796b1349e5a9521084, type: 3}
+  incorrectSound: {fileID: 8300000, guid: a794685c2c31e47adbdf5bec700db361, type: 3}
   startGameSound: {fileID: 8300000, guid: c9e07d29648240b02ab4e49425c660c2, type: 3}
+  gameOverSound: {fileID: 8300000, guid: 60698e5d0d46b76c58ddfb3670cb37b6, type: 3}
+  winSound: {fileID: 8300000, guid: 9cf4abafaa9eaf7e5a5523a702d475c8, type: 3}
 --- !u!114 &1673687287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2484,7 +2488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roundCountdownText: {fileID: 1981602407}
-  roundTime: 450
+  roundTime: 5
 --- !u!82 &1673687291
 AudioSource:
   m_ObjectHideFlags: 0

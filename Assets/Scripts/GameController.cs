@@ -11,11 +11,11 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject board;
 
     [SerializeField] private AudioSource audioSource;
-    // [SerializeField] private AudioClip correctSound;
-    // [SerializeField] private AudioClip incorrectSound;
+    [SerializeField] private AudioClip correctSound;
+    [SerializeField] private AudioClip incorrectSound;
     [SerializeField] private AudioClip startGameSound;
-    // [SerializeField] private AudioClip gameOverSound;
-    // [SerializeField] private AudioClip winSound;
+    [SerializeField] private AudioClip gameOverSound;
+    [SerializeField] private AudioClip winSound;
 
     private GameObject firstTile;
     private GameObject secondTile;
@@ -133,12 +133,12 @@ public class GameController : MonoBehaviour
                 AddScore();
 
                 clearTiles += 2;
-                //audioSource.PlayOneShot(correctSound);
+                audioSource.PlayOneShot(correctSound);
 
                 if (clearTiles >= totalTiles)
                 {
                     isGameOver = true;
-                    //audioSource.PlayOneShot(winSound);
+                    audioSource.PlayOneShot(winSound);
                 }
             }
             else
@@ -148,7 +148,7 @@ public class GameController : MonoBehaviour
 
                 score -= 25;
 
-                //audioSource.PlayOneShot(incorrectSound);
+                audioSource.PlayOneShot(incorrectSound);
             }
         }
     }
@@ -192,7 +192,7 @@ public class GameController : MonoBehaviour
     public void SetGameOver()
     {
         isGameOver = true;
-        //audioSource.PlayOneShot(gameOverSound);
+        audioSource.PlayOneShot(gameOverSound);
 
         ResetTiles();
     }
