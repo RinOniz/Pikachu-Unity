@@ -16,6 +16,8 @@ public class ModeSelectPanel : MonoBehaviour
 
     [SerializeField] private LevelSelectPanel levelSelectPanel;
 
+    [SerializeField] private Menu menuScript;
+
     private void Start()
     {
         returnButton.onClick.AddListener(HidePanel);

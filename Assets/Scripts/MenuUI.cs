@@ -15,6 +15,9 @@ public class MenuUI : MonoBehaviour
     [SerializeField] private GameObject modeSelectPanel;
     //[SerializeField] private GameObject tutorialPanel;
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip startGameSound;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
@@ -32,6 +35,8 @@ public class MenuUI : MonoBehaviour
 
     private void QuickPlayClassic()
     {
+        PlaySound();
+
         PlayerPrefs.SetInt("GameMode", 0);
         PlayerPrefs.SetInt("GameLevel", 1);
 
@@ -55,5 +60,10 @@ public class MenuUI : MonoBehaviour
         #else
             Application.Quit();
         #endif
+    }
+
+    public void PlaySound()
+    {
+        audioSource.PlayOneShot(startGameSound);
     }
 }

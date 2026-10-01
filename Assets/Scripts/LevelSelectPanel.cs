@@ -11,7 +11,8 @@ public class LevelSelectPanel : MonoBehaviour
     [SerializeField] private Button backButton;
 
     [SerializeField] private GameObject modeSelectPanel;
-    //[SerializeField] private Menu menuScript;
+
+    [SerializeField] private MenuUI menuScript;
 
     private void Start()
     {
@@ -34,7 +35,7 @@ public class LevelSelectPanel : MonoBehaviour
 
     private void LoadGameWithLevel(int levelNumber)
     {
-        //menuScript.PlaySound();
+        menuScript.PlaySound();
 
         PlayerPrefs.SetInt("GameLevel", levelNumber);
 

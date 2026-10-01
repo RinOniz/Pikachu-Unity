@@ -25,7 +25,7 @@ public class Pause : MonoBehaviour
         else
         {
             gameController.SetPause(false);
-            //gameController.PlayStartSound();
+            gameController.PlayStartSound();
         }
     }
 

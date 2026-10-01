@@ -10,6 +10,13 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject resultPanel;
     [SerializeField] private GameObject board;
 
+    [SerializeField] private AudioSource audioSource;
+    // [SerializeField] private AudioClip correctSound;
+    // [SerializeField] private AudioClip incorrectSound;
+    [SerializeField] private AudioClip startGameSound;
+    // [SerializeField] private AudioClip gameOverSound;
+    // [SerializeField] private AudioClip winSound;
+
     private GameObject firstTile;
     private GameObject secondTile;
 
@@ -32,6 +39,25 @@ public class GameController : MonoBehaviour
 
         clearTiles = 0;
         totalTiles = GetComponent<Board>().GetTotalTiles();
+
+        // if (audioSource != null)
+        // {
+        //     audioSource.volume = PlayerPrefs.GetFloat("SFXVolume", 1f);
+        // }
+
+        // GameObject bgm = GameObject.Find("BackgroundMusic");
+
+        // if (bgm != null)
+        // {
+        //     AudioSource bgmSource = bgm.GetComponent<AudioSource>();
+
+        //     if (bgmSource != null)
+        //     {
+        //         bgmSource.Play(); 
+        //     }
+        // }
+
+        PlayStartSound();
     }
 
     // Update is called once per frame
@@ -70,6 +96,11 @@ public class GameController : MonoBehaviour
 
         CompareTwoTiles();
         ResetTiles();
+    }
+
+    public void PlayStartSound()
+    {
+        audioSource.PlayOneShot(startGameSound);
     }
 
     private void ResetTiles()
