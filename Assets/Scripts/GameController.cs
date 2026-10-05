@@ -40,10 +40,10 @@ public class GameController : MonoBehaviour
         clearTiles = 0;
         totalTiles = GetComponent<Board>().GetTotalTiles();
 
-        // if (audioSource != null)
-        // {
-        //     audioSource.volume = PlayerPrefs.GetFloat("SFXVolume", 1f);
-        // }
+        if (audioSource != null)
+        {
+            audioSource.volume = PlayerPrefs.GetFloat("SFXVolume", 1f);
+        }
 
         // GameObject bgm = GameObject.Find("BackgroundMusic");
 
