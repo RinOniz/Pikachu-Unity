@@ -25,6 +25,15 @@ public class ResultPanel : MonoBehaviour
 
     public void Show(bool winStatus, int score, float playTime)
     {
+        GameObject boardObj = GameObject.Find("Board");
+        if (boardObj != null) boardObj.SetActive(false);
+
+        GameObject dangerLineObj = GameObject.Find("DangerLine");
+        if (dangerLineObj != null) dangerLineObj.SetActive(false);
+
+        GameObject pathObj = GameObject.Find("Path");
+        if (pathObj != null) pathObj.SetActive(false);
+
         resultPanel.SetActive(true);
 
         stars.SetActive(winStatus);

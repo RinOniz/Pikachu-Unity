@@ -330,6 +330,21 @@ public class MemoryGameController : MonoBehaviour
     public void SetGameOver()
     {
         isGameOver = true;
+        StopAllCoroutines();
+
+        if (board != null)
+        {
+            board.SetActive(false);
+        }
+        else
+        {
+            GameObject b = GameObject.Find("Board");
+            if (b != null) b.SetActive(false);
+        }
+
+        GameObject p = GameObject.Find("Path");
+        if (p != null) p.SetActive(false);
+
         if (audioSource != null && gameOverSound != null)
         {
             audioSource.PlayOneShot(gameOverSound);
@@ -348,10 +363,20 @@ public class MemoryGameController : MonoBehaviour
         if (isGameOver && !isResultShown)
         {
             isResultShown = true;
+            StopAllCoroutines();
+
             if (board != null)
             {
                 board.SetActive(false);
             }
+            else
+            {
+                GameObject b = GameObject.Find("Board");
+                if (b != null) b.SetActive(false);
+            }
+
+            GameObject pathObj = GameObject.Find("Path");
+            if (pathObj != null) pathObj.SetActive(false);
 
             float remainTime = 0f;
             MemoryRoundCountdown countdown = GetComponent<MemoryRoundCountdown>();

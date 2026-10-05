@@ -32,6 +32,12 @@ public class MemoryResultPanel : MonoBehaviour
 
     public void Show(bool winStatus, int score, float playTime)
     {
+        GameObject boardObj = GameObject.Find("Board");
+        if (boardObj != null) boardObj.SetActive(false);
+
+        GameObject pathObj = GameObject.Find("Path");
+        if (pathObj != null) pathObj.SetActive(false);
+
         if (resultPanel != null)
         {
             resultPanel.SetActive(true);

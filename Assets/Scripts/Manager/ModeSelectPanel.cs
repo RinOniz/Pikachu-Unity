@@ -15,10 +15,11 @@ public class ModeSelectPanel : MonoBehaviour
     [SerializeField] private GameObject modeSelectPanel;
 
     [SerializeField] private LevelSelectPanel levelSelectPanel;
+    [SerializeField] private SpecialModePanel specialModePanel;
 
     [SerializeField] private Menu menuScript;
 
-    private void Start()
+    private void Awake()
     {
         returnButton.onClick.AddListener(HidePanel);
         normalModeButton.onClick.AddListener(SelectNormalMode);
@@ -60,8 +61,11 @@ public class ModeSelectPanel : MonoBehaviour
 
     private void SelectOnlineMode()
     {
-        PlayerPrefs.SetInt("GameMode", 2);
-        PlayerPrefs.SetInt("GameLevel", 1);
-        SceneManager.LoadScene("MemoryGameScene");
+        HidePanel();
+
+        if (specialModePanel != null)
+        {
+            specialModePanel.Show();
+        }
     }
 }
