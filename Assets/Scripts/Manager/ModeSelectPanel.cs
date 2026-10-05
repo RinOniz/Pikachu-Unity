@@ -60,8 +60,8 @@ public class ModeSelectPanel : MonoBehaviour
 
     private void SelectOnlineMode()
     {
-        //menuScript.PlaySound();
-        //SceneManager.LoadScene("GameScene");
-        //PlayerPrefs.SetInt("GameMode", 2);
+        PlayerPrefs.SetInt("GameMode", 2);
+        PlayerPrefs.SetInt("GameLevel", 1);
+        SceneManager.LoadScene("MemoryGameScene");
     }
 }
