@@ -268,22 +268,46 @@ public class Board : MonoBehaviour
 
         remainingPairs.Remove(valueID);
 
-        int currentLevel = PlayerPrefs.GetInt("GameLevel", 1);
+        int gameMode = PlayerPrefs.GetInt("GameMode", 0);
 
-        if (currentLevel == 2)
+        if (gameMode == 1) // Funny Mode: Cứ ăn xong 1 cặp là tự động Change
         {
-            ShiftDown();
+            if (remainingPairs.Count > 0)
+            {
+                Change();
+
+                int safetyLimit = 50;
+                while (remainingPairs.Count > 0 && HasAnyMoves() == false && safetyLimit-- > 0)
+                {
+                    Change();
+                }
+
+                Hint hint = GetComponent<Hint>();
+                if (hint != null)
+                {
+                    hint.ChangeText("HINT");
+                }
+            }
         }
-        else if (currentLevel == 3)
+        else // Normal Mode: Dịch chuyển theo Level
         {
-            ShiftUp();
-        }
+            int currentLevel = PlayerPrefs.GetInt("GameLevel", 1);
 
-        if (remainingPairs.Count > 0 && HasAnyMoves() == false)
-        {
-            Debug.Log("Het duong, tu dong Change");
+            if (currentLevel == 2)
+            {
+                ShiftDown();
+            }
+            else if (currentLevel == 3)
+            {
+                ShiftUp();
+            }
 
-            Change();
+            if (remainingPairs.Count > 0 && HasAnyMoves() == false)
+            {
+                Debug.Log("Het duong, tu dong Change");
+
+                Change();
+            }
         }
     }
 

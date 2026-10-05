@@ -40,9 +40,18 @@ public class ResultPanel : MonoBehaviour
 
         if (winStatus)
         {
-            int currentLevel = PlayerPrefs.GetInt("GameLevel", 1);
-            if (currentLevel < 3) playAgainText.text = "NEXT LEVEL";
-            else playAgainText.text = "YOU WIN!";
+            int gameMode = PlayerPrefs.GetInt("GameMode", 0);
+
+            if (gameMode == 1) // Funny Mode chỉ có 1 level duy nhất
+            {
+                playAgainText.text = "YOU WIN!";
+            }
+            else
+            {
+                int currentLevel = PlayerPrefs.GetInt("GameLevel", 1);
+                if (currentLevel < 3) playAgainText.text = "NEXT LEVEL";
+                else playAgainText.text = "YOU WIN!";
+            }
         }
         else
         {
