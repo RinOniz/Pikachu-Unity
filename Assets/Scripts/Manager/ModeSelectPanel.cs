@@ -51,7 +51,11 @@ public class ModeSelectPanel : MonoBehaviour
 
         HidePanel();
 
-        levelSelectPanel.Show();
+        PlayerPrefs.SetInt("GameLevel", 1);
+
+        SceneManager.LoadScene("GameScene");
+
+        //levelSelectPanel.Show();
     }
 
     private void SelectOnlineMode()
