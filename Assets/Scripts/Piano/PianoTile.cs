@@ -27,7 +27,7 @@ public class PianoTile : MonoBehaviour
 
         bgRenderer = bgObj.AddComponent<SpriteRenderer>();
         bgRenderer.sprite = bgSprite;
-        bgRenderer.sortingOrder = 2;
+        bgRenderer.sortingOrder = 3;
         bgRenderer.color = Color.white;
 
         // Pokemon icon
@@ -38,7 +38,7 @@ public class PianoTile : MonoBehaviour
 
         iconRenderer = iconObj.AddComponent<SpriteRenderer>();
         iconRenderer.sprite = pokeSprite;
-        iconRenderer.sortingOrder = 3;
+        iconRenderer.sortingOrder = 4;
     }
 
     private void Update()

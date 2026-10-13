@@ -208,34 +208,74 @@ public class PianoGameController : MonoBehaviour
     {
         GameObject lanesObj = new GameObject("Lanes");
 
-        // Dot sprite để kẻ vạch
+        // Dot sprite để vẽ shape
         Sprite dotSprite = Resources.Load<Sprite>("UI/Dot");
 
-        // 1. Kẻ 5 đường viền dọc ngăn cách 4 làn
+        // 1. Nền mờ cho khu vực 4 làn (Track Backdrop) giúp các vạch và Pokemon cực kỳ nổi bật, sắc nét
+        GameObject trackBg = new GameObject("TrackBackdrop");
+        trackBg.transform.SetParent(lanesObj.transform);
+        trackBg.transform.position = new Vector3(-0.75f, 0.4f, 0f);
+        trackBg.transform.localScale = new Vector3(4.88f, 9.2f, 1f);
+
+        SpriteRenderer trackSr = trackBg.AddComponent<SpriteRenderer>();
+        trackSr.sprite = dotSprite;
+        trackSr.color = new Color(0f, 0f, 0f, 0.45f); // Đen trong suốt vừa vặn
+        trackSr.sortingOrder = 1;
+
+        // 2. Kẻ 5 đường viền dọc ngăn cách 4 làn (nét đậm, sáng rõ)
         for (int i = 0; i <= 4; i++)
         {
             float lineX = -3.15f + (i * 1.2f);
             GameObject lineObj = new GameObject("LaneLine_" + i);
             lineObj.transform.SetParent(lanesObj.transform);
             lineObj.transform.position = new Vector3(lineX, 0.4f, 0f);
-            lineObj.transform.localScale = new Vector3(0.04f, 9.0f, 1f);
+
+            bool isBorder = (i == 0 || i == 4);
+            // 2 vạch biên ngoài cùng dày 0.08f, 3 vạch giữa dày 0.055f
+            lineObj.transform.localScale = new Vector3(isBorder ? 0.085f : 0.055f, 9.2f, 1f);
 
             SpriteRenderer sr = lineObj.AddComponent<SpriteRenderer>();
             sr.sprite = dotSprite;
-            sr.color = new Color(1f, 1f, 1f, 0.22f); // Màu trắng mờ
-            sr.sortingOrder = 1;
+            // Vạch biên ngoài 95% opacity, vạch giữa 75% opacity sắc nét
+            sr.color = isBorder ? new Color(1f, 1f, 1f, 0.95f) : new Color(1f, 1f, 1f, 0.75f);
+            sr.sortingOrder = 2;
         }
 
-        // 2. Vạch phán định phát sáng (Hit Line) ở đáy
+        // 3. Khung phán định mờ tại mỗi làn ở vị trí Hit Line
+        for (int i = 0; i < 4; i++)
+        {
+            GameObject targetBox = new GameObject("HitTargetBox_" + i);
+            targetBox.transform.SetParent(lanesObj.transform);
+            targetBox.transform.position = new Vector3(laneX[i], HIT_LINE_Y, 0f);
+            targetBox.transform.localScale = new Vector3(1.08f, 1.08f, 1f);
+
+            SpriteRenderer boxSr = targetBox.AddComponent<SpriteRenderer>();
+            boxSr.sprite = cardBackgroundSprite != null ? cardBackgroundSprite : dotSprite;
+            boxSr.color = new Color(1f, 1f, 1f, 0.08f); // Ô mờ gợi ý vị trí rơi
+            boxSr.sortingOrder = 2;
+        }
+
+        // 4. Vạch phán định phát sáng (Hit Line) chính màu xanh neon cực nét ở đáy
         GameObject hitLineObj = new GameObject("HitLine");
         hitLineObj.transform.SetParent(lanesObj.transform);
         hitLineObj.transform.position = new Vector3(-0.75f, HIT_LINE_Y, 0f);
-        hitLineObj.transform.localScale = new Vector3(5.0f, 0.12f, 1f);
+        hitLineObj.transform.localScale = new Vector3(4.88f, 0.18f, 1f); // Dày 0.18f sắc nét
 
         SpriteRenderer hitSr = hitLineObj.AddComponent<SpriteRenderer>();
         hitSr.sprite = dotSprite;
-        hitSr.color = new Color(46f / 255f, 204f / 255f, 113f / 255f, 0.85f); // Xanh ngọc phát sáng
-        hitSr.sortingOrder = 4;
+        hitSr.color = new Color(46f / 255f, 245f / 255f, 115f / 255f, 1.0f); // Xanh neon 100% opaque, cực sáng
+        hitSr.sortingOrder = 5;
+
+        // 5. Lõi phát sáng trắng mảnh ở giữa thanh xanh (Core Highlight) tạo độ nét tinh tế
+        GameObject hitCoreObj = new GameObject("HitLine_Core");
+        hitCoreObj.transform.SetParent(lanesObj.transform);
+        hitCoreObj.transform.position = new Vector3(-0.75f, HIT_LINE_Y, 0f);
+        hitCoreObj.transform.localScale = new Vector3(4.88f, 0.06f, 1f);
+
+        SpriteRenderer coreSr = hitCoreObj.AddComponent<SpriteRenderer>();
+        coreSr.sprite = dotSprite;
+        coreSr.color = new Color(230f / 255f, 255f / 255f, 240f / 255f, 0.95f);
+        coreSr.sortingOrder = 6;
     }
 
     private void Update()
@@ -407,12 +447,12 @@ public class PianoGameController : MonoBehaviour
 
         if (notesHitText != null)
         {
-            notesHitText.text = "HITS: " + notesHit;
+            notesHitText.text = notesHit.ToString();
         }
 
         if (livesText != null)
         {
-            livesText.text = "LIVES: " + Mathf.Max(0, lives);
+            livesText.text = Mathf.Max(0, lives).ToString();
         }
 
         if (lifeIcons != null && lifeIcons.Length >= 3)
