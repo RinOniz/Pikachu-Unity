@@ -6,6 +6,7 @@ public class SpecialModePanel : MonoBehaviour
 {
     [SerializeField] private Button memoryButton;
     [SerializeField] private Button tetrisButton;
+    [SerializeField] private Button pianoButton;
     [SerializeField] private Button backButton;
 
     [SerializeField] private GameObject modeSelectPanel;
@@ -23,6 +24,11 @@ public class SpecialModePanel : MonoBehaviour
         if (tetrisButton != null)
         {
             tetrisButton.onClick.AddListener(SelectTetrisMode);
+        }
+
+        if (pianoButton != null)
+        {
+            pianoButton.onClick.AddListener(SelectPianoMode);
         }
 
         if (backButton != null)
@@ -67,6 +73,17 @@ public class SpecialModePanel : MonoBehaviour
         {
             tetrisModePanel.Show();
         }
+    }
+
+    private void SelectPianoMode()
+    {
+        if (menuScript != null)
+        {
+            menuScript.PlaySound();
+        }
+
+        PlayerPrefs.SetInt("GameMode", 4);
+        SceneManager.LoadScene("PianoGameScene");
     }
 
     private void GoBackToModeSelect()
