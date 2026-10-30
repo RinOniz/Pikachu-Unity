@@ -17,7 +17,7 @@ public class ModeSelectPanel : MonoBehaviour
     [SerializeField] private LevelSelectPanel levelSelectPanel;
     [SerializeField] private SpecialModePanel specialModePanel;
 
-    [SerializeField] private Menu menuScript;
+    // [SerializeField] private Menu menuScript;
 
     private void Awake()
     {
