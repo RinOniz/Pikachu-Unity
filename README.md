@@ -1,4 +1,4 @@
-# PIKACHU ONET CONNECT (2D)
+# PIKACHU MODDED (2D)
 
 > **Dự án Môn học**: Thiết Kế Trò Chơi (Game Design) - UTC  
 > **Nền tảng**: Unity 2D (C#)
@@ -7,7 +7,7 @@
 
 ## 1. Thông Tin Đề Tài & Tác Giả
 
-* **Tên đề tài**: Trò chơi Pikachu Cổ Điển Mở Rộng Đa Chế Độ
+* **Tên đề tài**: Pikachu Modded
 * **Thể loại**: Giải đố Logic (Puzzle)
 * **Công cụ & Công nghệ phát triển**:
   - Engine: Unity 6.0
