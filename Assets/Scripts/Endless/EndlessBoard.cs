@@ -3,18 +3,21 @@ using UnityEngine;
 
 public class EndlessBoard : MonoBehaviour
 {
+    // cac gameobject ban co va prefab quan co
     [SerializeField] private GameObject board;
     [SerializeField] private GameObject tilePrefab;
 
-    [SerializeField] private int initialRows = 4; // Bắt đầu với 4 hàng ở đáy (hàng 5, 6, 7, 8)
+    // so luong hang khoi dau o day ban co
+    [SerializeField] private int initialRows = 4; // bat dau voi 4 hang o day tu hang 5 den hang 8
 
     private Sprite[] tileSprites;
     private GameObject[,] tileObjects;
     private int[,] idGrid;
 
-    private const int totalRows = 10; // Hàng 0 và 9 là biên rỗng
-    private const int totalCols = 18; // Cột 0 và 17 là biên rỗng
-    private const int playableCols = 16; // Cột 1 đến 16
+    // kich thuoc ma tran 10x18 voi cac bien dem xung quanh
+    private const int totalRows = 10; // hang 0 va 9 la bien rong
+    private const int totalCols = 18; // cot 0 va 17 la bien rong
+    private const int playableCols = 16; // vung choi gom cot 1 den 16
 
     private float startX = -9.2f;
     private float startY = 4.5f;
@@ -25,13 +28,14 @@ public class EndlessBoard : MonoBehaviour
     private GameObject hintTileOne;
     private GameObject hintTileTwo;
 
+    // co xac dinh co ap dung trong luc tetris hay khong
     private bool isGravity = false;
     private int rowsPushedCount = 0;
     private int pairsClearedCount = 0;
 
+    // ham khoi tao nap sprite va tao cac hang khoi dau
     private void Start()
     {
-        // 0: Classic, 1: Funny, 3: Tetris/Endless
         int mode = PlayerPrefs.GetInt("GameMode", 3);
         if (mode == 1)
         {
@@ -47,7 +51,7 @@ public class EndlessBoard : MonoBehaviour
             tileSprites = Resources.LoadAll<Sprite>("Pokemon");
         }
 
-        // Đọc chế độ Trọng lực: 0 = NoGravity, 1 = Gravity
+        // doc tuy chon trong luc: 0 = khong trong luc, 1 = co trong luc tut xuong
         isGravity = (PlayerPrefs.GetInt("TetrisGravity", 0) == 1);
 
         GameObject pathObj = GameObject.Find("Path");
@@ -59,6 +63,7 @@ public class EndlessBoard : MonoBehaviour
         InitializeBoard();
     }
 
+    // ham khoi tao ma tran va sinh cac hang quan co ban dau o day
     private void InitializeBoard()
     {
         tileObjects = new GameObject[totalRows, totalCols];
@@ -75,15 +80,14 @@ public class EndlessBoard : MonoBehaviour
 
         remainingPairs.Clear();
 
-        // Tạo các hàng khởi đầu ở đáy bàn cờ
-        // initialRows = 4 -> từ hàng (9 - initialRows) đến hàng 8
+        // tao cac hang khoi dau o day ban co tu hang 5 den 8
         int startRow = Mathf.Clamp(totalRows - 1 - initialRows, 1, 8);
         for (int r = startRow; r <= 8; r++)
         {
             SpawnRowAt(r);
         }
 
-        // Đảm bảo ban đầu có ít nhất 1 nước đi
+        // dam bao ban dau co it nhat mot nuoc di hop le
         int safety = 30;
         while (!HasAnyMoves() && safety-- > 0)
         {
@@ -91,9 +95,10 @@ public class EndlessBoard : MonoBehaviour
         }
     }
 
+    // ham sinh mot hang quan co moi tai chi so hang chi dinh
     private void SpawnRowAt(int targetRow)
     {
-        // Mỗi hàng có 16 ô (cột 1 đến 16) = 8 cặp
+        // moi hang co 16 o tuong ung 8 cap quan co
         List<int> rowIds = new List<int>();
         for (int p = 0; p < playableCols / 2; p++)
         {
@@ -103,7 +108,7 @@ public class EndlessBoard : MonoBehaviour
             remainingPairs.Add(pairId);
         }
 
-        // Shuffle hàng này
+        // xao tron thu tu cac quan co trong hang
         for (int i = 0; i < rowIds.Count; i++)
         {
             int temp = rowIds[i];
@@ -112,6 +117,7 @@ public class EndlessBoard : MonoBehaviour
             rowIds[rand] = temp;
         }
 
+        // khoi tao gameobject cho tung o trong hang
         for (int c = 1; c <= playableCols; c++)
         {
             int valId = rowIds[c - 1];
@@ -146,10 +152,7 @@ public class EndlessBoard : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Kiểm tra xem có quân cờ nào đang ở hàng nguy hiểm (hàng 1) hay không.
-    /// Nếu có, việc đẩy thêm hàng sẽ làm tràn đỉnh -> Thua cuộc.
-    /// </summary>
+    // ham kiem tra xem hang nguy hiem tren cung hang 1 da co quan co chua
     public bool IsDangerRowOccupied()
     {
         for (int c = 1; c <= playableCols; c++)
@@ -162,22 +165,18 @@ public class EndlessBoard : MonoBehaviour
         return false;
     }
 
-    /// <summary>
-    /// Đẩy toàn bộ các hàng từ dưới lên trên.
-    /// Hàng mới xuất hiện ở đáy (hàng 8).
-    /// Trả về false nếu hàng 1 đã có quân (tràn đỉnh -> Game Over).
-    /// </summary>
+    // ham day toan bo cac hang len tren mot nac va sinh hang moi o day
     public bool PushRowFromBottom()
     {
-        // Kiểm tra tràn đỉnh
+        // kiem tra neu hang tren cung da co quan co thi tran bang thua cuoc
         if (IsDangerRowOccupied())
         {
-            return false; // Tràn bảng -> Game Over
+            return false;
         }
 
         ClearHintTiles();
 
-        // Dịch chuyển các hàng 2..8 lên hàng 1..7
+        // dich chuyen cac hang tu 2 den 8 len cac hang 1 den 7
         for (int r = 1; r <= 7; r++)
         {
             for (int c = 1; c <= playableCols; c++)
@@ -199,19 +198,19 @@ public class EndlessBoard : MonoBehaviour
             }
         }
 
-        // Hàng 8 rỗng tạm thời
+        // dat hang 8 ve trang thai rong
         for (int c = 1; c <= playableCols; c++)
         {
             idGrid[8, c] = -1;
             tileObjects[8, c] = null;
         }
 
-        // Sinh hàng mới ở hàng 8
+        // sinh hang moi tai hang 8 o day
         SpawnRowAt(8);
 
         rowsPushedCount++;
 
-        // Đảm bảo luôn có nước đi
+        // neu het nuoc di thi tu dong dao vi tri
         if (remainingPairs.Count > 0 && !HasAnyMoves())
         {
             Change();
@@ -220,10 +219,12 @@ public class EndlessBoard : MonoBehaviour
         return true;
     }
 
+    // ham xoa hai quan co khi an thanh cong va xu ly trong luc roi
     public void Clear(Position firstPos, Position secondPos)
     {
         int valueID = idGrid[firstPos.row, firstPos.col];
 
+        // cap nhat ma tran logic sang o trong
         idGrid[firstPos.row, firstPos.col] = -1;
         idGrid[secondPos.row, secondPos.col] = -1;
 
@@ -235,22 +236,20 @@ public class EndlessBoard : MonoBehaviour
         remainingPairs.Remove(valueID);
         pairsClearedCount++;
 
-        // Chế độ Trọng lực: các ô phía trên tụt xuống lấp đầy ô trống
+        // neu che do co trong luc duoc bat thi cac o phia tren roi xuong lap khoang trong
         if (isGravity)
         {
             ApplyGravity();
         }
 
-        // Nếu hết nước đi thì tự động đảo cờ
+        // neu het nuoc di thi tu dong dao co
         if (remainingPairs.Count > 0 && !HasAnyMoves())
         {
             Change();
         }
     }
 
-    /// <summary>
-    /// Áp dụng trọng lực: các ô ở trên rơi xuống các vị trí trống bên dưới trong cùng cột.
-    /// </summary>
+    // ham ap dung trong luc roi: cac quan co phia tren tut xuong cac vi tri trong ben duoi
     private void ApplyGravity()
     {
         for (int c = 1; c <= playableCols; c++)
@@ -272,6 +271,7 @@ public class EndlessBoard : MonoBehaviour
         }
     }
 
+    // ham di chuyen quan co tu hang nay sang hang khac trong cung cot
     private void MoveTile(int fromRow, int col, int toRow)
     {
         idGrid[toRow, col] = idGrid[fromRow, col];
@@ -294,12 +294,13 @@ public class EndlessBoard : MonoBehaviour
         }
     }
 
+    // ham xao tron lai toan bo cac quan co hien co tren ban
     public void Change()
     {
-        // Thu thập toàn bộ các ô hiện đang có trên bàn cờ
         List<Position> activePositions = new List<Position>();
         List<int> currentIds = new List<int>();
 
+        // thu thap cac vi tri dang co quan co
         for (int r = 1; r <= 8; r++)
         {
             for (int c = 1; c <= playableCols; c++)
@@ -314,7 +315,7 @@ public class EndlessBoard : MonoBehaviour
 
         if (currentIds.Count == 0) return;
 
-        // Trộn các ID hiện có
+        // tron ngau nhien danh sach id
         for (int i = 0; i < currentIds.Count; i++)
         {
             int temp = currentIds[i];
@@ -323,7 +324,7 @@ public class EndlessBoard : MonoBehaviour
             currentIds[rand] = temp;
         }
 
-        // Gán lại cho các vị trí
+        // gan lai id va sprite cho tung quan co
         for (int i = 0; i < activePositions.Count; i++)
         {
             Position pos = activePositions[i];
@@ -351,6 +352,7 @@ public class EndlessBoard : MonoBehaviour
         ClearHintTiles();
     }
 
+    // ham tim va bat sang cap quan co goi y
     public bool GetHint()
     {
         Position[] pair = FindValidPairs();
@@ -377,6 +379,7 @@ public class EndlessBoard : MonoBehaviour
         return false;
     }
 
+    // ham khoi phuc lai mau cho cac quan co goi y
     public void ClearHintTiles()
     {
         if (hintTileOne != null)
@@ -394,8 +397,10 @@ public class EndlessBoard : MonoBehaviour
         hintTileTwo = null;
     }
 
+    // ham kiem tra thuat toan duong noi onet toi da 2 khuc gap giua hai diem
     public bool CheckLine(Position startPos, Position endPos, bool drawPath)
     {
+        // truong hop 1: noi thang theo chieu ngang chu i
         if (startPos.row == endPos.row && CheckLineCol(startPos.row, startPos.col, endPos.col))
         {
             if (drawPath && pathController != null)
@@ -405,6 +410,7 @@ public class EndlessBoard : MonoBehaviour
             return true;
         }
 
+        // truong hop 2: noi thang theo chieu doc chu i
         if (startPos.col == endPos.col && CheckLineRow(startPos.col, startPos.row, endPos.row))
         {
             if (drawPath && pathController != null)
@@ -414,6 +420,7 @@ public class EndlessBoard : MonoBehaviour
             return true;
         }
 
+        // truong hop 3: noi 1 khuc gap chu l qua goc ngang doc
         if (idGrid[startPos.row, endPos.col] == -1 &&
             CheckLineCol(startPos.row, startPos.col, endPos.col) &&
             CheckLineRow(endPos.col, startPos.row, endPos.row))
@@ -425,6 +432,7 @@ public class EndlessBoard : MonoBehaviour
             return true;
         }
 
+        // truong hop 4: noi 1 khuc gap chu l qua goc doc ngang
         if (idGrid[endPos.row, startPos.col] == -1 &&
             CheckLineRow(startPos.col, startPos.row, endPos.row) &&
             CheckLineCol(endPos.row, startPos.col, endPos.col))
@@ -436,6 +444,7 @@ public class EndlessBoard : MonoBehaviour
             return true;
         }
 
+        // truong hop 5: noi 2 khuc gap chu z hoac chu u theo hang ngang mo rong
         for (int row = 0; row < totalRows; row++)
         {
             if (row != startPos.row && row != endPos.row && idGrid[row, startPos.col] == -1 && idGrid[row, endPos.col] == -1)
@@ -453,6 +462,7 @@ public class EndlessBoard : MonoBehaviour
             }
         }
 
+        // truong hop 6: noi 2 khuc gap chu z hoac chu u theo cot doc mo rong
         for (int col = 0; col < totalCols; col++)
         {
             if (col != startPos.col && col != endPos.col && idGrid[startPos.row, col] == -1 && idGrid[endPos.row, col] == -1)
@@ -473,6 +483,7 @@ public class EndlessBoard : MonoBehaviour
         return false;
     }
 
+    // ham kiem tra doan duong doc giua hai hang co trong khong
     private bool CheckLineRow(int col, int row1, int row2)
     {
         int min = Mathf.Min(row1, row2);
@@ -488,6 +499,7 @@ public class EndlessBoard : MonoBehaviour
         return true;
     }
 
+    // ham kiem tra doan duong ngang giua hai cot co trong khong
     private bool CheckLineCol(int row, int col1, int col2)
     {
         int min = Mathf.Min(col1, col2);
@@ -503,6 +515,7 @@ public class EndlessBoard : MonoBehaviour
         return true;
     }
 
+    // ham tim kiem cap quan co hop le theo thu tu uu tien
     public Position[] FindValidPairs()
     {
         Position[] adjacent = FindAdjacentPairs();
@@ -514,6 +527,7 @@ public class EndlessBoard : MonoBehaviour
         return FindNormalPairs();
     }
 
+    // ham tim cap quan co lien ke sat nhau
     private Position[] FindAdjacentPairs()
     {
         for (int row = 1; row <= 8; row++)
@@ -543,6 +557,7 @@ public class EndlessBoard : MonoBehaviour
         return null;
     }
 
+    // ham tim cap quan co o ria ngoai mep ban co
     private Position[] FindEdgePairs()
     {
         List<Position> edgeTiles = new List<Position>();
@@ -562,6 +577,7 @@ public class EndlessBoard : MonoBehaviour
             }
         }
 
+        // sap xep do sau tu ria vao trong
         edgeTiles.Sort((p1, p2) =>
         {
             int depth1 = GetLayerDepth(p1.row, p1.col);
@@ -589,6 +605,7 @@ public class EndlessBoard : MonoBehaviour
         return null;
     }
 
+    // ham vet can toan bo ban co de tim cap noi duoc
     private Position[] FindNormalPairs()
     {
         for (int row1 = 1; row1 <= 8; row1++)
@@ -619,6 +636,7 @@ public class EndlessBoard : MonoBehaviour
         return null;
     }
 
+    // ham tinh khoang cach den bon mep vien
     private int GetLayerDepth(int row, int col)
     {
         int distTop = row;
@@ -629,12 +647,18 @@ public class EndlessBoard : MonoBehaviour
         return Mathf.Min(distTop, distBottom, distLeft, distRight);
     }
 
+    // ham kiem tra xem co con nuoc di hop le nao tren ban khong
     public bool HasAnyMoves()
     {
         return FindValidPairs() != null;
     }
 
+    // ham lay so cap quan co da an thanh cong
     public int GetPairsCleared() => pairsClearedCount;
+
+    // ham lay so hang da duoc day tu day len
     public int GetRowsPushed() => rowsPushedCount;
+
+    // ham kiem tra co che trong luc co dang bat khong
     public bool GetIsGravity() => isGravity;
 }

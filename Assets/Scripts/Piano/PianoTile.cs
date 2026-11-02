@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PianoTile : MonoBehaviour
 {
+    // dinh danh pokemon, chi so lan roi va toc do roi
     public int pokemonId;
     public int laneIndex;
     public float fallSpeed = 2.4f;
@@ -10,8 +11,10 @@ public class PianoTile : MonoBehaviour
     private SpriteRenderer bgRenderer;
     private bool isHit = false;
 
+    // moc toa do y khi not roi qua vach ma nguoi choi khong bat kip
     private const float MISS_Y = -4.3f;
 
+    // ham khoi tao not roi voi thong so lan, toc do va hinh anh
     public void Init(int id, int lane, float speed, Sprite pokeSprite, Sprite bgSprite)
     {
         pokemonId = id;
@@ -19,7 +22,7 @@ public class PianoTile : MonoBehaviour
         fallSpeed = speed;
         isHit = false;
 
-        // Background card
+        // khoi tao doi tuong vien nen quan co
         GameObject bgObj = new GameObject("TileBackground");
         bgObj.transform.SetParent(transform);
         bgObj.transform.localPosition = Vector3.zero;
@@ -30,7 +33,7 @@ public class PianoTile : MonoBehaviour
         bgRenderer.sortingOrder = 3;
         bgRenderer.color = Color.white;
 
-        // Pokemon icon
+        // khoi tao doi tuong hinh anh pokemon
         GameObject iconObj = new GameObject("TileIcon");
         iconObj.transform.SetParent(transform);
         iconObj.transform.localPosition = Vector3.zero;
@@ -41,15 +44,16 @@ public class PianoTile : MonoBehaviour
         iconRenderer.sortingOrder = 4;
     }
 
+    // ham update di chuyen quan co roi xuong moi frame
     private void Update()
     {
         if (isHit) return;
         if (PianoGameController.Instance != null && (PianoGameController.Instance.IsPause() || PianoGameController.Instance.IsGameOver())) return;
 
-        // Di chuyển rơi xuống
+        // di chuyen quan co roi xuong theo toc do
         transform.position += Vector3.down * fallSpeed * Time.deltaTime;
 
-        // Kiểm tra rơi quá vạch đáy mà không bấm -> Miss
+        // kiem tra neu quan co roi qua vach day ma khong bam kip thi tinh la miss
         if (transform.position.y <= MISS_Y)
         {
             isHit = true;
@@ -61,18 +65,22 @@ public class PianoTile : MonoBehaviour
         }
     }
 
+    // ham xu ly khi nguoi choi bat trung not roi
     public void OnHit()
     {
         isHit = true;
-        // Hiệu ứng bắt trúng: thu nhỏ và biến mất
+
+        // bat coroutine hieu ung thu nho va bien mat khi danh trung
         StartCoroutine(HitEffectRoutine());
     }
 
+    // coroutine dien hoat hieu ung bat trung not nhac
     private System.Collections.IEnumerator HitEffectRoutine()
     {
         float timer = 0f;
         Vector3 initialScale = transform.localScale;
 
+        // phong to nhe va lam mo dan trong 0.12 giay
         while (timer < 0.12f)
         {
             timer += Time.deltaTime;

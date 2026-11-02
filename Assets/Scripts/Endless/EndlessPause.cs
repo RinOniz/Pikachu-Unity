@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class EndlessPause : MonoBehaviour
 {
+    // nut tam dung va cac bieu tuong hinh anh
     [SerializeField] private Button pauseButton;
     [SerializeField] private TextMeshProUGUI pauseText;
     [SerializeField] private Sprite pauseImage;
@@ -11,6 +12,7 @@ public class EndlessPause : MonoBehaviour
 
     private EndlessGameController gameController;
 
+    // ham khoi tao va gan su kien cho nut pause
     private void Start()
     {
         gameController = GetComponent<EndlessGameController>();
@@ -20,6 +22,7 @@ public class EndlessPause : MonoBehaviour
         }
     }
 
+    // ham cho button pause chuyen doi qua lai giua tam dung va tiep tuc
     private void TogglePause()
     {
         if (gameController == null)
@@ -33,10 +36,12 @@ public class EndlessPause : MonoBehaviour
         }
     }
 
+    // ham update cap nhat hinh anh va text cua nut moi frame
     private void Update()
     {
         if (gameController == null) return;
 
+        // cap nhat giao dien khi dang choi hoac dang tam dung
         if (!gameController.IsPause())
         {
             if (pauseImage != null && pauseButton != null)

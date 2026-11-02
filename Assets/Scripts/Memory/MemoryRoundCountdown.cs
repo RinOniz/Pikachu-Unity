@@ -3,18 +3,21 @@ using UnityEngine;
 
 public class MemoryRoundCountdown : MonoBehaviour
 {
+    // text hien thi thoi gian dem nguoc
     [SerializeField] private TextMeshProUGUI roundCountdownText;
     [SerializeField] private int roundTime = 300;
 
     private float roundTimeLeft;
     private MemoryGameController gameController;
 
+    // ham khoi tao thoi gian man choi tri nho
     private void Start()
     {
         roundTimeLeft = (float)roundTime;
         gameController = GetComponent<MemoryGameController>();
     }
 
+    // ham update cap nhat thoi gian dem nguoc moi frame
     private void Update()
     {
         if (gameController == null)
@@ -23,6 +26,7 @@ public class MemoryRoundCountdown : MonoBehaviour
             if (gameController == null) return;
         }
 
+        // dung dem thoi gian khi game tam dung, ket thuc hoac dang trinh chieu
         if (gameController.IsPause() || gameController.IsGameOver() || gameController.IsPreviewing())
         {
             return;
@@ -30,11 +34,13 @@ public class MemoryRoundCountdown : MonoBehaviour
 
         float currentTime = 0.0f;
 
+        // tru thoi gian troi qua
         if (roundTimeLeft > 0)
         {
             roundTimeLeft -= Time.deltaTime;
             currentTime = roundTimeLeft > 0 ? roundTimeLeft : 0.0f;
 
+            // neu het gio thi bao thua cuoc
             if (currentTime == 0.0f)
             {
                 gameController.SetGameOver();
@@ -44,6 +50,7 @@ public class MemoryRoundCountdown : MonoBehaviour
         float minutes = Mathf.FloorToInt(currentTime / 60);
         float seconds = Mathf.FloorToInt(currentTime % 60);
 
+        // doi mau chu theo thoi gian con lai
         if (roundCountdownText != null)
         {
             if (currentTime <= 30f)
@@ -63,6 +70,7 @@ public class MemoryRoundCountdown : MonoBehaviour
         }
     }
 
+    // ham lay thoi gian da choi trong van
     public float GetRemainTime()
     {
         return (float)roundTime - roundTimeLeft;

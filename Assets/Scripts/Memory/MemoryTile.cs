@@ -2,18 +2,23 @@ using UnityEngine;
 
 public class MemoryTile : MonoBehaviour
 {
+    // vien nen cua the bai
     [SerializeField] private GameObject tileBackground;
 
+    // toa do hang cot va dinh danh pokemon
     public int row;
     public int col;
     public int id;
 
+    // thanh phan ve hinh anh va trang thai lat the
     private SpriteRenderer iconRenderer;
     private SpriteRenderer bgRenderer;
     private bool isFaceUp = false;
 
+    // thuoc tinh kiem tra the dang mo hay dang up
     public bool IsFaceUp => isFaceUp;
 
+    // ham khoi tao cac thanh phan sprite renderer
     private void Awake()
     {
         iconRenderer = GetComponent<SpriteRenderer>();
@@ -23,6 +28,7 @@ public class MemoryTile : MonoBehaviour
         }
     }
 
+    // ham khoi tao thong so the bai va mac dinh up the xuong
     public void Initialize(int row, int col, int id, Sprite sprite)
     {
         this.row = row;
@@ -41,9 +47,11 @@ public class MemoryTile : MonoBehaviour
         iconRenderer.sortingOrder = 2;
         iconRenderer.sprite = sprite;
 
+        // mac dinh ban dau up the xuong
         HideTile();
     }
 
+    // ham mo the bai va hien thi hinh anh pokemon
     public void ShowTile(bool isSelectedHighlight = true)
     {
         isFaceUp = true;
@@ -52,12 +60,14 @@ public class MemoryTile : MonoBehaviour
             iconRenderer.enabled = true;
         }
 
+        // doi mau nen vien khi duoc chon
         if (bgRenderer != null)
         {
             bgRenderer.color = isSelectedHighlight ? new Color(234f / 255f, 150f / 255f, 150f / 255f, 1.0f) : Color.white;
         }
     }
 
+    // ham up the bai xuong an hinh anh pokemon
     public void HideTile()
     {
         isFaceUp = false;
@@ -72,6 +82,7 @@ public class MemoryTile : MonoBehaviour
         }
     }
 
+    // ham bat sang the bai khi duoc he thong goi y
     public void HighlightHint()
     {
         if (iconRenderer != null)
@@ -79,12 +90,14 @@ public class MemoryTile : MonoBehaviour
             iconRenderer.enabled = true;
         }
 
+        // doi mau nen vien sang mau xanh la
         if (bgRenderer != null)
         {
             bgRenderer.color = new Color(113f / 255f, 204f / 255f, 86f / 255f, 1.0f);
         }
     }
 
+    // ham khoi phuc lai trang thai the sau khi het thoi gian goi y
     public void RestoreFromHint()
     {
         if (!isFaceUp)
@@ -97,6 +110,7 @@ public class MemoryTile : MonoBehaviour
         }
     }
 
+    // ham cap nhat lai sprite hinh anh pokemon khi dao ban
     public void SetSprite(Sprite sprite)
     {
         if (iconRenderer == null)
@@ -106,6 +120,7 @@ public class MemoryTile : MonoBehaviour
         iconRenderer.sprite = sprite;
     }
 
+    // ham xu ly khi nguoi choi click chuot vao the bai
     public void OnMouseDown()
     {
         GameObject gameControllerObj = GameObject.Find("GameController");
@@ -120,17 +135,19 @@ public class MemoryTile : MonoBehaviour
             return;
         }
 
+        // bo qua click khi game dang pause, game over hoac he thong dang trinh chieu
         if (controller.IsPause() || controller.IsGameOver() || controller.IsProcessing() || controller.IsPreviewing())
         {
             return;
         }
 
-        // Không cho phép bấm lại vào ô đã mở
+        // khong cho phep bam lai vao the da lat mo
         if (isFaceUp)
         {
             return;
         }
 
+        // xu ly chon the thu hai hoac the thu nhat
         if (controller.IsSelected())
         {
             if (controller.GetFirstTile() != this)

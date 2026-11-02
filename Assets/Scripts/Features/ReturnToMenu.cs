@@ -4,20 +4,22 @@ using UnityEngine.SceneManagement;
 
 public class ReturnToMenu : MonoBehaviour
 {
+    // nut bam de quay tro ve man hinh menu
     [SerializeField] private Button returnToMenuButton;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // ham khoi tao va gan su kien click cho nut return
     private void Start()
     {
         returnToMenuButton.onClick.AddListener(ReturnToMenuScene);
     }
 
-    // Update is called once per frame
+    // ham update chay moi frame
     private void Update()
     {
         
     }
 
+    // ham cho button return de tai lai scene menu chinh
     private void ReturnToMenuScene()
     {
         SceneManager.LoadScene("MenuScene");

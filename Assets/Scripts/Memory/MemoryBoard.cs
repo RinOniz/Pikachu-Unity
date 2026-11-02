@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class MemoryBoard : MonoBehaviour
 {
+    // cac gameobject ban co va prefab the bai
     [SerializeField] private GameObject board;
     [SerializeField] private GameObject tilePrefab;
 
+    // tap sprite hinh anh
     [SerializeField] private Sprite[] classicSprites;
     [SerializeField] private Sprite[] funnySprites;
 
@@ -17,20 +19,25 @@ public class MemoryBoard : MonoBehaviour
     private List<int> remainingPairs;
     private Path pathController;
 
+    // tong so the tren ban choi
     public static int totalTiles = 8 * 16;
 
+    // kich thuoc ma tran luoi bao gom vien dem 10x18
     private const int totalRows = 10;
     private const int totalCols = 18;
     private int[,] idGrid;
 
+    // toa do goc khoi tao
     private float startX = -9.2f;
     private float startY = 4.5f;
 
+    // coroutine tu dong tat goi y sau thoi gian ngan
     private Coroutine hintCoroutine;
 
+    // ham khoi tao nap sprite va sinh ban co the bai
     private void Start()
     {
-        // Có thể dùng pokemon hoặc funny tùy cấu hình
+        // nap sprite pokemon hoac funny tu thu muc resources
         classicSprites = Resources.LoadAll<Sprite>("Pokemon");
         tileSprites = classicSprites;
 
@@ -46,10 +53,12 @@ public class MemoryBoard : MonoBehaviour
             pathController = pathObj.GetComponent<Path>();
         }
 
+        // chon cap ngau nhien va sinh the bai
         PickRandomPairs();
         CreateBoard(ShuffleTiles());
     }
 
+    // ham chon ngau nhien cac cap the cho van dau
     private void PickRandomPairs()
     {
         remainingPairs = new List<int>();
@@ -61,6 +70,7 @@ public class MemoryBoard : MonoBehaviour
         }
     }
 
+    // ham nhan doi moi the thanh mot cap va xao tron
     private List<int> ShuffleTiles()
     {
         List<int> duplicatedList = new List<int>();
@@ -70,6 +80,7 @@ public class MemoryBoard : MonoBehaviour
             duplicatedList.AddRange(new List<int> { remainingPairs[i], remainingPairs[i] });
         }
 
+        // thuat toan xao tron vi tri ngau nhien
         for (int i = 0; i < duplicatedList.Count; i++)
         {
             int temp = duplicatedList[i];
@@ -82,6 +93,7 @@ public class MemoryBoard : MonoBehaviour
         return duplicatedList;
     }
 
+    // ham khoi tao ma tran va sinh cac gameobject the bai
     private void CreateBoard(List<int> duplicatedList)
     {
         tileObjects = new MemoryTile[totalRows, totalCols];
@@ -89,28 +101,27 @@ public class MemoryBoard : MonoBehaviour
 
         int i = 0;
 
+        // duyet qua toan bo luoi ma tran de tao the
         for (int row = 0; row < totalRows; row++)
         {
             for (int col = 0; col < totalCols; col++)
             {
+                // cac o vien ngoai luon la o trong
                 if (row == 0 || row == totalRows - 1 || col == 0 || col == totalCols - 1)
                 {
                     tileObjects[row, col] = null;
                     idGrid[row, col] = -1;
                 }
+                // cac o ben trong duoc gan du lieu va the bai
                 else
                 {
                     int valueId = duplicatedList[i];
-
                     Vector3 position = new Vector3(startX + col, startY - row, 0.0f);
 
-                    GameObject newTileObj = Instantiate(tilePrefab, position, Quaternion.identity) as GameObject;
+                    GameObject newTileObj = Instantiate(tilePrefab, position, Quaternion.identity);
                     newTileObj.name = "Tile[" + row + ", " + col + "]";
                     newTileObj.transform.localScale = new Vector3(0.76f, 0.76f, 1f);
-                    if (board != null)
-                    {
-                        newTileObj.transform.SetParent(board.transform);
-                    }
+                    newTileObj.transform.SetParent(board.transform);
 
                     MemoryTile tileData = newTileObj.GetComponent<MemoryTile>();
                     tileData.Initialize(row, col, valueId, tileSprites[valueId]);
@@ -124,14 +135,10 @@ public class MemoryBoard : MonoBehaviour
         }
     }
 
+    // ham kiem tra duong noi hop le toi da 2 khuc gap giua hai the
     public bool CheckLine(Position startPos, Position endPos, bool drawPath)
     {
-        if (pathController == null)
-        {
-            GameObject pathObj = GameObject.Find("Path");
-            if (pathObj != null) pathController = pathObj.GetComponent<Path>();
-        }
-
+        // truong hop 1: noi thang theo chieu ngang chu i
         if (startPos.row == endPos.row && CheckLineCol(startPos.row, startPos.col, endPos.col))
         {
             if (drawPath && pathController != null)
@@ -141,6 +148,7 @@ public class MemoryBoard : MonoBehaviour
             return true;
         }
 
+        // truong hop 2: noi thang theo chieu doc chu i
         if (startPos.col == endPos.col && CheckLineRow(startPos.col, startPos.row, endPos.row))
         {
             if (drawPath && pathController != null)
@@ -150,6 +158,7 @@ public class MemoryBoard : MonoBehaviour
             return true;
         }
 
+        // truong hop 3: noi 1 khuc gap chu l qua goc ngang doc
         if (idGrid[startPos.row, endPos.col] == -1 &&
             CheckLineCol(startPos.row, startPos.col, endPos.col) &&
             CheckLineRow(endPos.col, startPos.row, endPos.row))
@@ -161,6 +170,7 @@ public class MemoryBoard : MonoBehaviour
             return true;
         }
 
+        // truong hop 4: noi 1 khuc gap chu l qua goc doc ngang
         if (idGrid[endPos.row, startPos.col] == -1 &&
             CheckLineRow(startPos.col, startPos.row, endPos.row) &&
             CheckLineCol(endPos.row, startPos.col, endPos.col))
@@ -172,6 +182,7 @@ public class MemoryBoard : MonoBehaviour
             return true;
         }
 
+        // truong hop 5: noi 2 khuc gap chu z hoac chu u theo hang ngang mo rong
         for (int row = 0; row < totalRows; row++)
         {
             if (row != startPos.row && row != endPos.row && idGrid[row, startPos.col] == -1 && idGrid[row, endPos.col] == -1)
@@ -189,6 +200,7 @@ public class MemoryBoard : MonoBehaviour
             }
         }
 
+        // truong hop 6: noi 2 khuc gap chu z hoac chu u theo cot doc mo rong
         for (int col = 0; col < totalCols; col++)
         {
             if (col != startPos.col && col != endPos.col && idGrid[startPos.row, col] == -1 && idGrid[endPos.row, col] == -1)
@@ -209,6 +221,7 @@ public class MemoryBoard : MonoBehaviour
         return false;
     }
 
+    // ham kiem tra doan duong doc co bi can tro boi o nao khong
     private bool CheckLineRow(int col, int row1, int row2)
     {
         int min = Mathf.Min(row1, row2);
@@ -221,9 +234,11 @@ public class MemoryBoard : MonoBehaviour
                 return false;
             }
         }
+
         return true;
     }
 
+    // ham kiem tra doan duong ngang co bi can tro boi o nao khong
     private bool CheckLineCol(int row, int col1, int col2)
     {
         int min = Mathf.Min(col1, col2);
@@ -236,13 +251,16 @@ public class MemoryBoard : MonoBehaviour
                 return false;
             }
         }
+
         return true;
     }
 
+    // ham xoa the bai khi an dung va xu ly co che don o theo level
     public void Clear(Position firstPos, Position secondPos)
     {
         int valueID = idGrid[firstPos.row, firstPos.col];
 
+        // cap nhat ma tran ve o trong
         idGrid[firstPos.row, firstPos.col] = -1;
         idGrid[secondPos.row, secondPos.col] = -1;
 
@@ -254,22 +272,26 @@ public class MemoryBoard : MonoBehaviour
         remainingPairs.Remove(valueID);
 
         int currentLevel = PlayerPrefs.GetInt("GameLevel", 1);
+
+        // don the xuong duoi neu o level 2
         if (currentLevel == 2)
         {
             ShiftDown();
         }
+        // don the len tren neu o level 3
         else if (currentLevel == 3)
         {
             ShiftUp();
         }
 
-        if (remainingPairs.Count > 0 && !HasAnyMoves())
+        // neu het nuoc di hop le thi tu dong dao vi tri the bai
+        if (remainingPairs.Count > 0 && HasAnyMoves() == false)
         {
-            Debug.Log("Hết đường đi, tự động đổi vị trí...");
             Change();
         }
     }
 
+    // ham tim kiem cap the hop le de goi y
     public Position[] FindValidPairs()
     {
         Position[] adjacentPair = FindAdjacentPairs();
@@ -281,6 +303,7 @@ public class MemoryBoard : MonoBehaviour
         return FindNormalPairs();
     }
 
+    // ham tim cap the nam sat canh nhau
     private Position[] FindAdjacentPairs()
     {
         for (int row = 1; row < totalRows - 1; row++)
@@ -307,9 +330,11 @@ public class MemoryBoard : MonoBehaviour
                 }
             }
         }
+
         return null;
     }
 
+    // ham tim cap the nam o mep vien ban co
     private Position[] FindEdgePairs()
     {
         List<Position> edgeTiles = new List<Position>();
@@ -329,6 +354,7 @@ public class MemoryBoard : MonoBehaviour
             }
         }
 
+        // sap xep do sau tu ngoai vao trong
         edgeTiles.Sort((p1, p2) =>
         {
             int depth1 = GetLayerDepth(p1.row, p1.col);
@@ -352,9 +378,11 @@ public class MemoryBoard : MonoBehaviour
                 }
             }
         }
+
         return null;
     }
 
+    // ham vet can quet toan bo ban de tim cap the noi duoc
     private Position[] FindNormalPairs()
     {
         for (int row1 = 0; row1 < totalRows; row1++)
@@ -367,7 +395,6 @@ public class MemoryBoard : MonoBehaviour
                 for (int row2 = row1; row2 < totalRows; row2++)
                 {
                     int startCol = (row1 == row2) ? col1 + 1 : 0;
-
                     for (int col2 = startCol; col2 < totalCols; col2++)
                     {
                         int id2 = idGrid[row2, col2];
@@ -382,9 +409,11 @@ public class MemoryBoard : MonoBehaviour
                 }
             }
         }
+
         return null;
     }
 
+    // ham tinh do sau cua o so voi bon mep vien ban co
     private int GetLayerDepth(int row, int col)
     {
         int distTop = row;
@@ -395,6 +424,7 @@ public class MemoryBoard : MonoBehaviour
         return Mathf.Min(distTop, distBottom, distLeft, distRight);
     }
 
+    // ham bat sang cap the goi y trong mot khoang thoi gian ngan
     public bool GetHint()
     {
         StopHint();
@@ -408,6 +438,7 @@ public class MemoryBoard : MonoBehaviour
             if (hintTileOne != null) hintTileOne.HighlightHint();
             if (hintTileTwo != null) hintTileTwo.HighlightHint();
 
+            // bat coroutine de tu dong up lai sau 1.2 giay
             hintCoroutine = StartCoroutine(TemporaryHintRoutine(1.2f));
             return true;
         }
@@ -415,6 +446,7 @@ public class MemoryBoard : MonoBehaviour
         return false;
     }
 
+    // coroutine tu dong khoi phuc lai the bai sau thoi gian goi y
     private IEnumerator TemporaryHintRoutine(float duration)
     {
         yield return new WaitForSeconds(duration);
@@ -433,6 +465,7 @@ public class MemoryBoard : MonoBehaviour
         hintCoroutine = null;
     }
 
+    // ham dung va huy bo hieu ung goi y
     private void StopHint()
     {
         if (hintCoroutine != null)
@@ -453,6 +486,7 @@ public class MemoryBoard : MonoBehaviour
         }
     }
 
+    // ham dao vi tri tat ca cac the bai con lai tren ban
     public void Change()
     {
         StopHint();
@@ -470,7 +504,7 @@ public class MemoryBoard : MonoBehaviour
                 int id = newBoardLayout[indexID];
                 tile.id = id;
                 tile.SetSprite(tileSprites[id]);
-                tile.HideTile(); // Giữ trạng thái úp sau khi đảo bài
+                tile.HideTile(); // giu trang thai up sau khi dao bai
 
                 idGrid[row, col] = id;
                 indexID++;
@@ -478,6 +512,7 @@ public class MemoryBoard : MonoBehaviour
         }
     }
 
+    // ham di chuyen the bai tu hang nay sang hang khac trong ma tran
     private void MoveTile(int fromRow, int col, int toRow)
     {
         idGrid[toRow, col] = idGrid[fromRow, col];
@@ -495,6 +530,7 @@ public class MemoryBoard : MonoBehaviour
         }
     }
 
+    // ham don the xuong phia duoi lap khoang trong
     private void ShiftDown()
     {
         for (int c = 1; c < totalCols - 1; c++)
@@ -516,6 +552,7 @@ public class MemoryBoard : MonoBehaviour
         }
     }
 
+    // ham don the len phia tren lap khoang trong
     private void ShiftUp()
     {
         for (int c = 1; c < totalCols - 1; c++)
@@ -537,17 +574,20 @@ public class MemoryBoard : MonoBehaviour
         }
     }
 
+    // ham kiem tra con nuoc di hop le nao tren ban khong
     private bool HasAnyMoves()
     {
         Position[] pair = FindValidPairs();
         return pair != null;
     }
 
+    // ham lay tong so the bai ban dau
     public int GetTotalTiles()
     {
         return totalTiles;
     }
 
+    // ham lat mo toan bo the tren ban de nguoi choi quan sat
     public void ShowAllTiles(bool isSelectedHighlight = false)
     {
         if (tileObjects == null) return;
@@ -565,6 +605,7 @@ public class MemoryBoard : MonoBehaviour
         }
     }
 
+    // ham up toan bo the tren ban xuong
     public void HideAllTiles()
     {
         if (tileObjects == null) return;

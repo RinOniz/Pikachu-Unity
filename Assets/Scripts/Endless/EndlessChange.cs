@@ -3,10 +3,12 @@ using UnityEngine.UI;
 
 public class EndlessChange : MonoBehaviour
 {
+    // nut bam dao vi tri cac quan co
     [SerializeField] private Button changeButton;
 
     private EndlessGameController gameController;
 
+    // ham khoi tao va gan lang nghe su kien cho nut change
     private void Start()
     {
         gameController = GetComponent<EndlessGameController>();
@@ -16,6 +18,7 @@ public class EndlessChange : MonoBehaviour
         }
     }
 
+    // ham cho button change de thuc hien dao lai vi tri cac quan co tren ban
     private void OnChangeClicked()
     {
         if (gameController == null)

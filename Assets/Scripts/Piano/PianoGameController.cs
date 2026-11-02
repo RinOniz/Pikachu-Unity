@@ -6,8 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class PianoGameController : MonoBehaviour
 {
+    // instance singleton dung chung
     public static PianoGameController Instance;
 
+    // cac thanh phan giao dien nguoi dung
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI notesHitText;
@@ -18,6 +20,7 @@ public class PianoGameController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI pauseText;
     [SerializeField] private Button menuButton;
 
+    // am thanh tro choi
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip correctSound;
@@ -25,6 +28,7 @@ public class PianoGameController : MonoBehaviour
     [SerializeField] private AudioClip startGameSound;
     [SerializeField] private AudioClip gameOverSound;
 
+    // sprite nen the quan co
     [Header("Prefabs & Resources")]
     [SerializeField] private Sprite cardBackgroundSprite;
 
@@ -34,13 +38,13 @@ public class PianoGameController : MonoBehaviour
 
     private List<PianoTile> activeFallingTiles = new List<PianoTile>();
 
-    // 4 làn rơi ở trung tâm
+    // toa do 4 lan roi o trung tam man hinh
     private readonly float[] laneX = new float[] { -2.55f, -1.35f, -0.15f, 1.05f };
     private const float HIT_LINE_Y = -3.2f;
     private const float HIT_WINDOW_MIN = -3.95f;
     private const float HIT_WINDOW_MAX = -2.35f;
 
-    // Tiến trình rơi & tốc độ (tăng dần nhẹ nhàng)
+    // thong so toc do roi va tan suat sinh not (tang dan nhe nhang)
     private float currentFallSpeed = 2.3f;
     private float spawnInterval = 1.55f;
     private float spawnTimer = 0f;
@@ -54,7 +58,7 @@ public class PianoGameController : MonoBehaviour
     private bool isPause = false;
     private bool isResultShown = false;
 
-    // Cấu hình 12 phím bấm chuẩn cho 2 tay
+    // danh sach 12 phim bam tuong ung hai tay trai va phai
     private readonly KeyCode[] boundKeys = new KeyCode[]
     {
         KeyCode.Q, KeyCode.W, KeyCode.E,
@@ -71,11 +75,13 @@ public class PianoGameController : MonoBehaviour
         "J", "K", "L"
     };
 
+    // ham khoi tao singleton instance
     private void Awake()
     {
         Instance = this;
     }
 
+    // ham khoi tao man choi piano tiles
     private void Start()
     {
         score = 0;
@@ -88,8 +94,9 @@ public class PianoGameController : MonoBehaviour
 
         currentFallSpeed = 2.3f;
         spawnInterval = 1.55f;
-        spawnTimer = 0.5f; // Bắt đầu rơi nốt đầu tiên sau 0.5s
+        spawnTimer = 0.5f; // bat dau roi not dau tien sau 0.5s
 
+        // khoi tao am luong va phat am thanh bat dau
         if (audioSource != null)
         {
             audioSource.volume = PlayerPrefs.GetFloat("SFXVolume", 1f);
@@ -109,12 +116,14 @@ public class PianoGameController : MonoBehaviour
             menuButton.onClick.AddListener(() => SceneManager.LoadScene("MenuScene"));
         }
 
+        // nap tai nguyen sprite, tao the tham chieu va ke 4 lan roi
         LoadSprites();
         SetupReferenceCards();
         CreateVisualLanes();
         UpdateUI();
     }
 
+    // ham nap cac sprite pokemon va chon ngau nhien 12 con cho van choi
     private void LoadSprites()
     {
         allPokemonSprites = Resources.LoadAll<Sprite>("Pokemon");
@@ -141,7 +150,7 @@ public class PianoGameController : MonoBehaviour
             cardBackgroundSprite = Resources.Load<Sprite>("Buttons/Tile");
         }
 
-        // Chọn ngẫu nhiên 12 con Pokemon khác nhau
+        // chon ngau nhien 12 con pokemon khac nhau hoan toan
         List<int> availableIndices = new List<int>();
         for (int i = 0; i < allPokemonSprites.Length; i++) availableIndices.Add(i);
 
@@ -153,12 +162,12 @@ public class PianoGameController : MonoBehaviour
         }
     }
 
+    // ham tao 12 the tham chieu chia lam hai cum trai va phai
     private void SetupReferenceCards()
     {
         GameObject refRoot = new GameObject("ReferenceCards");
 
-        // Khu vực bên Trái (Q, W, E trên / A, S, D dưới)
-        // Vị trí X từ -7.0 đến -4.4, Y: 1.2f và -0.8f
+        // cum ben trai: q w e hang tren va a s d hang duoi
         float leftStartX = -6.8f;
         float spacingX = 1.25f;
 
@@ -180,8 +189,7 @@ public class PianoGameController : MonoBehaviour
             referenceCards[i] = card;
         }
 
-        // Khu vực bên Phải (U, I, O trên / J, K, L dưới)
-        // Vị trí X từ 2.8 đến 5.4, Y: 1.2f và -0.8f
+        // cum ben phai: u i o hang tren va j k l hang duoi
         float rightStartX = 2.9f;
 
         for (int i = 0; i < 6; i++)
@@ -204,14 +212,13 @@ public class PianoGameController : MonoBehaviour
         }
     }
 
+    // ham tao hinh anh 4 lan roi, vach phan dinh hit line va vien phat sang
     private void CreateVisualLanes()
     {
         GameObject lanesObj = new GameObject("Lanes");
-
-        // Dot sprite để vẽ shape
         Sprite dotSprite = Resources.Load<Sprite>("UI/Dot");
 
-        // 1. Nền mờ cho khu vực 4 làn (Track Backdrop) giúp các vạch và Pokemon cực kỳ nổi bật, sắc nét
+        // buoc 1: tao nen mo cho toan bo khu vuc 4 lan roi
         GameObject trackBg = new GameObject("TrackBackdrop");
         trackBg.transform.SetParent(lanesObj.transform);
         trackBg.transform.position = new Vector3(-0.75f, 0.4f, 0f);
@@ -219,10 +226,10 @@ public class PianoGameController : MonoBehaviour
 
         SpriteRenderer trackSr = trackBg.AddComponent<SpriteRenderer>();
         trackSr.sprite = dotSprite;
-        trackSr.color = new Color(0f, 0f, 0f, 0.45f); // Đen trong suốt vừa vặn
+        trackSr.color = new Color(0f, 0f, 0f, 0.45f);
         trackSr.sortingOrder = 1;
 
-        // 2. Kẻ 5 đường viền dọc ngăn cách 4 làn (nét đậm, sáng rõ)
+        // buoc 2: ke 5 duong vien doc ngan cach 4 lan roi
         for (int i = 0; i <= 4; i++)
         {
             float lineX = -3.15f + (i * 1.2f);
@@ -231,17 +238,15 @@ public class PianoGameController : MonoBehaviour
             lineObj.transform.position = new Vector3(lineX, 0.4f, 0f);
 
             bool isBorder = (i == 0 || i == 4);
-            // 2 vạch biên ngoài cùng dày 0.08f, 3 vạch giữa dày 0.055f
             lineObj.transform.localScale = new Vector3(isBorder ? 0.085f : 0.055f, 9.2f, 1f);
 
             SpriteRenderer sr = lineObj.AddComponent<SpriteRenderer>();
             sr.sprite = dotSprite;
-            // Vạch biên ngoài 95% opacity, vạch giữa 75% opacity sắc nét
             sr.color = isBorder ? new Color(1f, 1f, 1f, 0.95f) : new Color(1f, 1f, 1f, 0.75f);
             sr.sortingOrder = 2;
         }
 
-        // 3. Khung phán định mờ tại mỗi làn ở vị trí Hit Line
+        // buoc 3: tao khung phan dinh mo tai vi tri hit line o moi lan
         for (int i = 0; i < 4; i++)
         {
             GameObject targetBox = new GameObject("HitTargetBox_" + i);
@@ -251,22 +256,22 @@ public class PianoGameController : MonoBehaviour
 
             SpriteRenderer boxSr = targetBox.AddComponent<SpriteRenderer>();
             boxSr.sprite = cardBackgroundSprite != null ? cardBackgroundSprite : dotSprite;
-            boxSr.color = new Color(1f, 1f, 1f, 0.08f); // Ô mờ gợi ý vị trí rơi
+            boxSr.color = new Color(1f, 1f, 1f, 0.08f);
             boxSr.sortingOrder = 2;
         }
 
-        // 4. Vạch phán định phát sáng (Hit Line) chính màu xanh neon cực nét ở đáy
+        // buoc 4: tao vach phan dinh mau xanh neon phat sang o day
         GameObject hitLineObj = new GameObject("HitLine");
         hitLineObj.transform.SetParent(lanesObj.transform);
         hitLineObj.transform.position = new Vector3(-0.75f, HIT_LINE_Y, 0f);
-        hitLineObj.transform.localScale = new Vector3(4.88f, 0.18f, 1f); // Dày 0.18f sắc nét
+        hitLineObj.transform.localScale = new Vector3(4.88f, 0.18f, 1f);
 
         SpriteRenderer hitSr = hitLineObj.AddComponent<SpriteRenderer>();
         hitSr.sprite = dotSprite;
-        hitSr.color = new Color(46f / 255f, 245f / 255f, 115f / 255f, 1.0f); // Xanh neon 100% opaque, cực sáng
+        hitSr.color = new Color(46f / 255f, 245f / 255f, 115f / 255f, 1.0f);
         hitSr.sortingOrder = 5;
 
-        // 5. Lõi phát sáng trắng mảnh ở giữa thanh xanh (Core Highlight) tạo độ nét tinh tế
+        // buoc 5: tao loi trang phat sang manh o giua thanh phan dinh
         GameObject hitCoreObj = new GameObject("HitLine_Core");
         hitCoreObj.transform.SetParent(lanesObj.transform);
         hitCoreObj.transform.position = new Vector3(-0.75f, HIT_LINE_Y, 0f);
@@ -278,13 +283,14 @@ public class PianoGameController : MonoBehaviour
         coreSr.sortingOrder = 6;
     }
 
+    // ham update kiem tra roi not, bat phim va cap nhat giao dien moi frame
     private void Update()
     {
         if (isGameOver || isPause) return;
 
         survivalTime += Time.deltaTime;
 
-        // Sinh nốt rơi tự do
+        // sinh not roi tu do theo chu ky thoi gian
         spawnTimer -= Time.deltaTime;
         if (spawnTimer <= 0f)
         {
@@ -292,13 +298,14 @@ public class PianoGameController : MonoBehaviour
             SpawnFallingTile();
         }
 
-        // Lắng nghe 12 phím bấm
+        // lang nghe va xu ly su kien bam 12 phim tren ban phim
         HandleInput();
 
-        // Cập nhật giao diện
+        // cap nhat diem so va so mang
         UpdateUI();
     }
 
+    // ham sinh mot not nhac pokemon roi tu dinh xuong o mot trong 4 lan
     private void SpawnFallingTile()
     {
         int randLane = Random.Range(0, 4);
@@ -318,6 +325,7 @@ public class PianoGameController : MonoBehaviour
         activeFallingTiles.Add(tile);
     }
 
+    // ham kiem tra bam phim trong so 12 phim tuong ung
     private void HandleInput()
     {
         for (int i = 0; i < 12; i++)
@@ -329,16 +337,17 @@ public class PianoGameController : MonoBehaviour
         }
     }
 
+    // ham xu ly khi nguoi choi bam mot phim cu the
     private void OnKeyPressed(int cardIndex)
     {
         PianoReferenceCard card = referenceCards[cardIndex];
         int targetPokeId = card.pokemonId;
 
-        // Tìm nốt rơi khớp với Pokemon này đang ở gần vạch Hit Line nhất
+        // tim not roi khop voi pokemon nay dang o gan vach phan dinh nhat
         PianoTile bestMatchingTile = null;
         float lowestY = float.MaxValue;
 
-        // Dọn dẹp danh sách các tile đã bị huỷ
+        // don dep danh sach cac tile da bi huy
         activeFallingTiles.RemoveAll(t => t == null);
 
         foreach (var tile in activeFallingTiles)
@@ -357,9 +366,9 @@ public class PianoGameController : MonoBehaviour
             }
         }
 
+        // neu tim thay not hop le trong vung phan dinh -> bat trung
         if (bestMatchingTile != null)
         {
-            // BẮT TRÚNG (HIT)!
             card.HighlightPressed();
             activeFallingTiles.Remove(bestMatchingTile);
             bestMatchingTile.OnHit();
@@ -367,7 +376,7 @@ public class PianoGameController : MonoBehaviour
             notesHit++;
             score += 100;
 
-            // Tăng tốc nhẹ nhàng hợp lý
+            // tang toc do roi va tan suat xuat hien nhe nhang theo tien do
             currentFallSpeed = Mathf.Min(3.8f, 2.3f + (notesHit * 0.02f));
             spawnInterval = Mathf.Max(0.92f, 1.55f - (notesHit * 0.012f));
 
@@ -376,20 +385,22 @@ public class PianoGameController : MonoBehaviour
                 audioSource.PlayOneShot(correctSound);
             }
         }
+        // neu bam sai khi khong co not tuong ung -> phat am thanh va tru mang
         else
         {
-            // BẤM SAI (Không có nốt tương ứng ở vạch đệm)
             card.HighlightError();
             TakeDamage();
         }
     }
 
+    // ham xu ly khi not bi roi qua vach ma nguoi choi bo lo
     public void OnTileMiss(PianoTile tile)
     {
         activeFallingTiles.Remove(tile);
         TakeDamage();
     }
 
+    // ham tru mang cua nguoi choi khi bam sai hoac bo lo not
     private void TakeDamage()
     {
         if (isGameOver) return;
@@ -400,12 +411,14 @@ public class PianoGameController : MonoBehaviour
             audioSource.PlayOneShot(incorrectSound);
         }
 
+        // neu het 3 mang thi ket thuc van dau
         if (lives <= 0)
         {
             SetGameOver();
         }
     }
 
+    // ham ket thuc van dau va hien thi popup result panel
     private void SetGameOver()
     {
         if (isGameOver) return;
@@ -416,7 +429,7 @@ public class PianoGameController : MonoBehaviour
             audioSource.PlayOneShot(gameOverSound);
         }
 
-        // Dọn sạch nốt rơi
+        // don dep toan bo cac not dang roi
         foreach (var t in activeFallingTiles)
         {
             if (t != null) Destroy(t.gameObject);
@@ -438,6 +451,7 @@ public class PianoGameController : MonoBehaviour
         }
     }
 
+    // ham cap nhat diem so va icon trai tim the hien so mang
     private void UpdateUI()
     {
         if (scoreText != null)
@@ -455,6 +469,7 @@ public class PianoGameController : MonoBehaviour
             livesText.text = Mathf.Max(0, lives).ToString();
         }
 
+        // bat tat cac bieu tuong trai tim theo so mang con lai
         if (lifeIcons != null && lifeIcons.Length >= 3)
         {
             for (int i = 0; i < 3; i++)
@@ -467,6 +482,7 @@ public class PianoGameController : MonoBehaviour
         }
     }
 
+    // ham cho button pause chuyen doi trang thai tam dung
     public void TogglePause()
     {
         isPause = !isPause;
