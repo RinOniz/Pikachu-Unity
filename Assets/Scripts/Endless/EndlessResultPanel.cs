@@ -60,10 +60,11 @@ public class EndlessResultPanel : MonoBehaviour
         if (stars != null) stars.SetActive(false);
         if (gameOverImage != null) gameOverImage.SetActive(true);
 
-        // hien thi so cap da an va so hang da day tu duoi len
+        // hien thi tong diem va so cap quan co da an
         if (resultScoreText != null)
         {
-            resultScoreText.text = $"Cleared: {pairsCleared} pairs | Rows: {rowsPushed}";
+            int score = pairsCleared * 100;
+            resultScoreText.text = $"Score: {score} | Pairs: {pairsCleared}";
         }
 
         // tinh toan thoi gian sinh ton theo phut va giay
